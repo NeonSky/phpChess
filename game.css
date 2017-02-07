@@ -1,0 +1,24 @@
+#chessBoard {
+  width: 500px;
+  height: 500px;
+}
+
+.chessRow {
+  width: 100%;
+  height: 12.5%;
+}
+
+.chessTile {
+  float: right;
+  width: 12.5%;
+  height: 100%;
+}
+
+.lightTile { background: #eaca94; }
+.darkTile { background: #b78b5a; }
+
+.chessPiece {
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+}
