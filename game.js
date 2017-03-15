@@ -16,7 +16,9 @@ function initChessBoard() {
     var chessRow = appendElement(chessBoard, 'div', 'chessRow');
     for(var x = 0; x < chessBoardWidth; x++) {
       chessTiles[x][y] = appendElement(chessRow, 'div', 'chessTile ' + ((x%2+y%2 == 1) ? 'lightTile':'darkTile'));
-      chessTiles[x][y].addEventListener('click', onChessTileClick, false);
+      chessTiles[x][y].addEventListener('click', function(x, y) {
+        onChessTileClick(x, y);
+      }, false);
     }
   }
 }
@@ -45,8 +47,8 @@ function initChessPieces() {
   for(var i = 0; i < 8; i++) createChessPiece('light-pawn', i, 6);
 }
 
-function onChessTileClick(e) {
-  console.log(e);
+function onChessTileClick(x, y) {
+  console.log(x + " " + y);
   /*if(e.srcElement.firstChild == undefined && selectedChessPiece != undefined) {
     moveChessPiece(selectedChessPiece);
   }

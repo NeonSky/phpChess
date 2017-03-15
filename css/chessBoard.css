@@ -1,6 +1,15 @@
+#gamePanel {
+  float: left;
+  width: 60%;
+  height: 100%;
+}
+
 #chessBoard {
-  width: 500px;
-  height: 500px;
+  padding-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60vw;
+  height: 60vw;
 }
 
 .chessRow {
