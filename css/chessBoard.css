@@ -10,7 +10,8 @@
   margin-right: auto;
   width: 60vw;
   height: 60vw;
-  max-height: 80%;
+  max-width: 80vh;
+  max-height: 80vh;
 }
 
 .chessRow {
