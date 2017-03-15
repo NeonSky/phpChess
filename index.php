@@ -1,6 +1,5 @@
 <html>
   <head>
-    <!-- (cnt str &a=""):runtimeerror(a) {} -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/chessBoard.css">
     <link rel="stylesheet" href="css/chatPanel.css">
