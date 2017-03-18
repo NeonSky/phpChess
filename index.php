@@ -11,7 +11,14 @@
       <div id="chessBoard"></div>
     </div>
     <div id="chatPanel"></div>
-
-    <script src="game.js"></script>
   </body>
 </html>
+
+<?php
+  include "roomFileManager.php";
+  include "game.php";
+
+  $roomId = $_GET['room'];
+  readRoomFile($roomId);
+  //updateRoomFile($roomId, $boardState);
+?>
