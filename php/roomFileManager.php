@@ -1,14 +1,14 @@
 <?php
 
   $defaultBoardState = array(
-    array('dr','dk','db','dq','dk','db','dk','dr'),
+    array('dr','dh','db','dq','dk','db','dh','dr'),
     array('dp','dp','dp','dp','dp','dp','dp','dp'),
     array('00','00','00','00','00','00','00','00'),
     array('00','00','00','00','00','00','00','00'),
     array('00','00','00','00','00','00','00','00'),
     array('00','00','00','00','00','00','00','00'),
     array('lp','lp','lp','lp','lp','lp','lp','lp'),
-    array('lr','lk','lb','lq','lk','lb','lk','lr')
+    array('lr','lh','lb','lq','lk','lb','lh','lr')
   );
 
   function getRoomFilePath($roomId) {

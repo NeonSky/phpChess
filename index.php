@@ -15,10 +15,10 @@
 </html>
 
 <?php
-  include "roomFileManager.php";
-  include "game.php";
-
+  // Global Variables Setup
   $roomId = $_GET['room'];
-  readRoomFile($roomId);
-  //updateRoomFile($roomId, $boardState);
+
+  // PHP includes
+  include "./php/roomFileManager.php";
+  include "./php/game.php";
 ?>
