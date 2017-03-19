@@ -1,6 +1,5 @@
 var selectedChessPiece;
 
-
 function onChessTileClick(e) {
   if(selectedChessPiece != undefined) {
     moveChessPiece(selectedChessPiece, e.target.row, e.target.col, e.srcElement.firstChild != undefined);

@@ -19,6 +19,6 @@
   $roomId = $_GET['room'];
 
   // PHP includes
-  include "./php/roomFileManager.php";
+  include "./php/fileManager.php";
   include "./php/game.php";
 ?>

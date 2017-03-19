@@ -1,4 +1,5 @@
 <script type="text/javascript" src="js/domManager.js"></script>
+<script type="text/javascript" src="js/ajaxManager.js"></script>
 <script type="text/javascript" src="js/gameManager.js"></script>
 
 <script type="text/javascript">
@@ -22,6 +23,7 @@
   const chessBoardWidth = 8;
   const chessBoardHeight = 8;
 
+  var roomId = <?php echo json_encode($roomId); ?>;
   var chessBoard = document.getElementById('chessBoard');
   var chessTiles = new Array(chessBoardWidth);
   for(var i = 0; i < chessBoardWidth; i++) chessTiles[i] = new Array(chessBoardHeight);
@@ -31,6 +33,12 @@
   function startGame() {
     buildChessBoard();
     spawnChessPieces();
+    fetchMoveHistory(false, loadMoveHistory);
+  }
+
+  function loadMoveHistory(moveHistory) {
+    console.log("Move history received!");
+    console.log(moveHistory);
   }
 
   function buildChessBoard() {
