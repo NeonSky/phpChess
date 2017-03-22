@@ -35,7 +35,7 @@
     buildChessBoard();
     spawnChessPieces();
     fetchMoveHistory(0, loadMoveHistory);
-    setInterval(function() { fetchMoveHistory(1, loadMoveHistory); }, 1000);
+    setInterval(function() { fetchMoveHistory(1, loadMoveHistory); }, 100);
   }
 
   function loadMoveHistory(moveHistory) {

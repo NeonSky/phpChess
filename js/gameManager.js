@@ -3,7 +3,8 @@ var selectedChessPiece;
 function onChessTileClick(e) {
   if(selectedChessPiece != undefined) {
     let tile = selectedChessPiece.element.parentElement;
-    moveChessPiece(tile.row, tile.col, e.target.row, e.target.col);
+    //moveChessPiece(tile.row, tile.col, e.target.row, e.target.col);
+    sendMoveRequest(getMoveNotation(tile.row, tile.col, e.target.row, e.target.col));
   }
   else if(e.srcElement.firstChild != undefined) {
     selectChessPiece(e.srcElement.firstChild, e.target.row, e.target.col);
@@ -22,7 +23,7 @@ function selectChessPiece(element, row, col) {
 function moveChessPiece(r1, c1, r2, c2) {
   let chessPiece = chessTiles[r1][c1].firstChild;
   if(chessPiece) {
-    if(chessTiles[r2][c2].firstChild) { killChessPiece(r, c); }
+    if(chessTiles[r2][c2].firstChild) { killChessPiece(r2, c2); }
     chessTiles[r2][c2].append(chessPiece);
     selectedChessPiece = null;
   }
@@ -34,9 +35,9 @@ function killChessPiece(r, c) {
 }
 
 function getMoveNotation(r1, c1, r2, c2) {
-  let from = String.fromCharCode(c1+97) + String.fromCharCode(r1+48);
+  let from = String.fromCharCode(c1+97) + String.fromCharCode(r1+49);
   let delim = ":";
-  let to = String.fromCharCode(c2+97) + String.fromCharCode(r2+48);
+  let to = String.fromCharCode(c2+97) + String.fromCharCode(r2+49);
   return from+delim+to;
 }
 

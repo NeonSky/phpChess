@@ -35,12 +35,21 @@ function receivedMoveHistory(mode, callback) {
   }
 }
 
-function sendMove(move) {
+function sendMoveRequest(move) {
   if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
     xmlHttp.onreadystatechange = function() {
-      receivedMoveHistory(callback);
+      receivedMoveResponse();
     }
     xmlHttp.open("GET", "php/moveHistory.php?room="+roomId+"&move="+move, true);
-    xmlHttp.send(null)
+    xmlHttp.send(null);
+  }
+}
+
+function receivedMoveResponse() {
+  if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+    let xmlResponse = xmlHttp.responseXML;
+    if(xmlResponse) {
+      console.log(xmlResponse);
+    }
   }
 }

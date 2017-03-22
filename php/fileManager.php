@@ -1,5 +1,6 @@
 <?php
 
+  // TODO: Rename board state to start state
   $defaultBoardState = array(
     array('dr','dh','db','dq','dk','db','dh','dr'),
     array('dp','dp','dp','dp','dp','dp','dp','dp'),
