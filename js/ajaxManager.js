@@ -2,8 +2,8 @@ var xmlHttp = new XMLHttpRequest();
 
 function fetchMoveHistory(onlyLatest, callback) {
   if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
-    xmlHttp.onreadystatechange = function() {
-      receivedBoardState(firstTime, callback);
+      xmlHttp.onreadystatechange = function() {
+      receivedMoveHistory(onlyLatest, callback);
     }
     xmlHttp.open("GET", "php/moveHistory.php?room="+roomId+"&onlyLatest="+onlyLatest, true);
     xmlHttp.send(null);

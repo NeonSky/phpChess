@@ -16,6 +16,7 @@
 
 <?php
   // Global Variables Setup
+  if($_GET['room'] == null) $_GET['room'] = "1";
   $roomId = $_GET['room'];
 
   // PHP includes
