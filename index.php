@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" href="css/main.css">
@@ -8,7 +9,9 @@
   <body>
     <div id="actionPanel"></div>
     <div id="gamePanel">
+      <?php include "./html/leftBorder.php"; ?>
       <div id="chessBoard"></div>
+      <?php include "./html/bottomBorder.php"; ?>
     </div>
     <div id="chatPanel"></div>
   </body>

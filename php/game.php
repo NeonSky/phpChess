@@ -5,7 +5,7 @@
 <script type="text/javascript">
 
   // Look-up table for database name to image name
-  var dbToImgName = {
+  const dbToImgName = {
     'dk': 'dark-king',
     'dq': 'dark-queen',
     'db': 'dark-bishop',
@@ -27,6 +27,8 @@
   var chessBoard = document.getElementById('chessBoard');
   var chessTiles = new Array(chessBoardWidth);
   for(var i = 0; i < chessBoardWidth; i++) chessTiles[i] = new Array(chessBoardHeight);
+
+  const myColor = "l";
   var latestMove;
 
   startGame();
@@ -40,10 +42,18 @@
 
   function loadMoveHistory(moveHistory) {
     if(moveHistory == undefined) return;
-    for(let i = 0; i < moveHistory.length; i++) {
-      if(i == moveHistory.length-1 && latestMove == moveHistory[i]) { continue; }
-      let move = getMoveAction(moveHistory[i]);
-      moveChessPiece(move.r1, move.c1, move.r2, move.c2);
+
+    if(moveHistory.length == 1) {
+      if(latestMove != moveHistory[0]) {
+        let move = getMoveAction(moveHistory[0]);
+        moveChessPiece(move.r1, move.c1, move.r2, move.c2);
+      }
+    }
+    else {
+      for(let i = 0; i < moveHistory.length; i++) {
+        let move = getMoveAction(moveHistory[i]);
+        moveChessPiece(move.r1, move.c1, move.r2, move.c2);
+      }
     }
   }
 
@@ -64,15 +74,19 @@
 
     for(let r = 0; r < chessBoardHeight; r++) {
       for(let c = 0; c < chessBoardWidth; c++) {
-        let name = dbToImgName[boardState[r][c]];
-        if(name != undefined) createChessPiece(name, r, c);
+        let name = boardState[r][c];
+        if(name != undefined) { createChessPiece(name, r, c); }
       }
     }
   }
 
-  function createChessPiece(name, r, c) {
-    var chessPiece = appendElement(chessTiles[r][c], 'img', 'chessPiece');
-    chessPiece.src = './res/' + name + '.svg';
+  function createChessPiece(dbName, r, c) {
+    let imgName = dbToImgName[dbName];
+    if(imgName != undefined) {
+      var chessPiece = appendElement(chessTiles[r][c], 'img', 'chessPiece');
+      chessPiece.name = dbName;
+      chessPiece.src = './res/' + imgName + '.svg';
+    }
     return chessPiece;
   }
 

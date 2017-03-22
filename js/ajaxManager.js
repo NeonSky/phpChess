@@ -45,11 +45,12 @@ function sendMoveRequest(move) {
   }
 }
 
+// TODO: remove me
 function receivedMoveResponse() {
   if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     let xmlResponse = xmlHttp.responseXML;
     if(xmlResponse) {
-      console.log(xmlResponse);
+      //console.log(xmlResponse);
     }
   }
 }
