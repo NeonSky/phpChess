@@ -3,29 +3,29 @@
   echo '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>';
 
   $roomId = $_GET['room'];
-  $onlyLatest = $_GET['onlyLatest'];
+  $mode;
+  if(isset($_GET['mode'])) { $mode = $_GET['mode']; }
+  $move;
+  if(isset($_GET['move'])) { $move = $_GET['move']; }
 
   include "./fileManager.php";
 
   echo '<response>';
-  if($mh = readHistoryFile($roomId, $onlyLatest)) {
-    for($r = 0; $r < count($mh); $r++) {
-      if($mh[$r][0]) {
-        echo '<move>';
-        echo $mh[$r][0];
-        echo '</move>';
+  if(!is_null($roomId) && !is_null($mode)) {
+    if($mh = readHistoryFile($roomId, $mode)) {
+      for($r = 0; $r < count($mh); $r++) {
+        for($c = 0; $c < count($mh[$r]); $c++) {
+          if($mh[$r][$c]) {
+            echo '<move>';
+            echo $mh[$r][$c];
+            echo '</move>';
+          }
+        }
       }
     }
+  }
+  else if(!is_null($roomId) && !is_null($move)) {
 
-    /*for($r = 0; $r < 8; $r++) {
-      echo '<row id="'.$r.'">';
-      for($c = 0; $c < 8; $c++) {
-        echo '<col id="'.$c.'">';
-        echo $bs[$r][$c];
-        echo '</col>';
-      }
-      echo '</row>';
-    }*/
   }
   echo '</response>';
 

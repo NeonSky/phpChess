@@ -76,7 +76,7 @@
     else { return 0; }
   }
 
-  function readHistoryFile($roomId, $onlyLatest) {
+  function readHistoryFile($roomId, $mode) {
     if(!file_exists(getHistoryFilePath($roomId))) { resetHistoryFile($roomId); }
 
     //addCsvEntry(getHistoryFilePath($roomId), ["a4:c5"]);
@@ -84,15 +84,15 @@
 
     if($historyFile = openHistoryFile($roomId, "r")) {
       $moveHistory = array();
-      if($onlyLatest) {
-        $lastLine;
+      if($mode == 1) {
+        $lastLine = null;
         while(!feof($historyFile)) {
           $line = fgetcsv($historyFile);
           if($line) $lastLine = $line;
         }
-        array_push($moveHistory, $lastLine);
+        if($lastLine) array_push($moveHistory, $lastLine);
       }
-      else {
+      else if($mode == 0) {
         while(!feof($historyFile)) {
           $line = fgetcsv($historyFile);
           array_push($moveHistory, $line);

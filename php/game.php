@@ -27,18 +27,24 @@
   var chessBoard = document.getElementById('chessBoard');
   var chessTiles = new Array(chessBoardWidth);
   for(var i = 0; i < chessBoardWidth; i++) chessTiles[i] = new Array(chessBoardHeight);
+  var latestMove;
 
   startGame();
 
   function startGame() {
     buildChessBoard();
     spawnChessPieces();
-    fetchMoveHistory(false, loadMoveHistory);
+    fetchMoveHistory(0, loadMoveHistory);
+    setInterval(function() { fetchMoveHistory(1, loadMoveHistory); }, 1000);
   }
 
   function loadMoveHistory(moveHistory) {
-    console.log("Move history received!");
-    console.log(moveHistory);
+    if(moveHistory == undefined) return;
+    for(let i = 0; i < moveHistory.length; i++) {
+      if(i == moveHistory.length-1 && latestMove == moveHistory[i]) { continue; }
+      let move = getMoveAction(moveHistory[i]);
+      moveChessPiece(move.r1, move.c1, move.r2, move.c2);
+    }
   }
 
   function buildChessBoard() {
