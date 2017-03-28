@@ -90,7 +90,7 @@ function isOutOfBounds(r1, c1, r2, c2) {
 function isMoveLegal(r1, c1, r2, c2) {
   if(r1 == r2 && c1 == c2) return false;
   if(isOutOfBounds(r1, c1, r2, c2)) return false;
-  if(!isOpponent(r2, c2)) { return false; }
+  if(isAlly(r2, c2)) { return false; }
 
   let chessPiece = chessTiles[r1][c1].firstChild;
   let pieceColor = chessPiece.name.charAt(0);
@@ -114,7 +114,7 @@ function isMoveLegal(r1, c1, r2, c2) {
       return isRookMoveLegal(r1, c1, r2, c2);
       break;
     case "p":
-      return isPawnMoveLegal(r1, c1, r2, c2, opponent);
+      return isPawnMoveLegal(r1, c1, r2, c2);
       break;
     default:
       return false;
@@ -131,21 +131,36 @@ function isKnightMoveLegal(r1, c1, r2, c2) {}
 function isRookMoveLegal(r1, c1, r2, c2) {
   if(r1 == r2) {
     if(c1 < c2) {
-      for(let c = c1; c <= c2; c++) {
+      for(let c = c1+1; c <= c2; c++) {
         if(isAlly(r1, c)) { return false; }
       }
+      return true;
     } else {
-
+      for(let c = c2; c < c1; c++) {
+        if(isAlly(r1, c)) { return false; }
+      }
+      return true;
     }
   }
   else if(c1 == c2) {
-
+    if(r1 < r2) {
+      for(let r = r1+1; r <= r2; r++) {
+        if(isAlly(r, c1)) { return false; }
+      }
+      return true;
+    } else {
+      for(let r = r2; r < r1; r++) {
+        if(isAlly(r, c1)) { return false; }
+      }
+      return true;
+    }
   }
   return false;
 }
 
-function isPawnMoveLegal(r1, c1, r2, c2, opponent) {
-  if(opponent) {
+function isPawnMoveLegal(r1, c1, r2, c2) {
+  console.log("Pawn move");
+  if(isOpponent(r2, c2)) {
     if(r2 == r1-1 && c2 == c1-1) { return true; }
     if(r2 == r1-1 && c2 == c1+1) { return true; }
   } else {
