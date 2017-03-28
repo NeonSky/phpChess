@@ -27,7 +27,7 @@ function receivedMoveHistory(mode, callback) {
       }
       callback(moves);
     }
-    else {
+    else if(mode == 0) {
       setTimeout(function() {
         fetchMoveHistory(mode, callback);
       }, 1000);

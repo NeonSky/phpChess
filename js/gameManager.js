@@ -3,8 +3,9 @@ var selectedChessPiece;
 function onChessTileClick(e) {
   if(selectedChessPiece != undefined) {
     let tile = selectedChessPiece.element.parentElement;
-    moveChessPiece(tile.row, tile.col, e.target.row, e.target.col);
-    //sendMoveRequest(getMoveNotation(tile.row, tile.col, e.target.row, e.target.col));
+    if(isMoveLegal(tile.row, tile.col, e.target.row, e.target.col)) {
+      sendMoveRequest(getMoveNotation(tile.row, tile.col, e.target.row, e.target.col));
+    }
   }
   else if(e.srcElement.firstChild != undefined) {
     selectChessPiece(e.srcElement.firstChild, e.target.row, e.target.col);
@@ -24,16 +25,10 @@ function moveChessPiece(r1, c1, r2, c2) {
   latestMove = getMoveNotation(r1, c1, r2, c2);
   let chessPiece = chessTiles[r1][c1].firstChild;
   if(chessPiece) {
-    if(isMoveLegal(r1, c1, r2, c2)) {
-      sendMoveRequest(getMoveNotation(r1, c1, r2, c2));
-      if(isCheckMate()) {
+    if(chessTiles[r2][c2].firstChild) { killChessPiece(r2, c2); }
+    chessTiles[r2][c2].append(chessPiece);
 
-      }
-      else {
-        if(chessTiles[r2][c2].firstChild) { killChessPiece(r2, c2); }
-        chessTiles[r2][c2].append(chessPiece);
-      }
-    }
+    if(isCheckMate()) {}
     selectedChessPiece = null;
   }
 }
@@ -88,6 +83,7 @@ function isOutOfBounds(r1, c1, r2, c2) {
 }
 
 function isMoveLegal(r1, c1, r2, c2) {
+  console.log(c1 + ":" + r1 + ", " + c2 + ":" + r2);
   if(r1 == r2 && c1 == c2) return false;
   if(isOutOfBounds(r1, c1, r2, c2)) return false;
   if(isAlly(r2, c2)) { return false; }
@@ -124,10 +120,67 @@ function isMoveLegal(r1, c1, r2, c2) {
   return false;
 }
 
-function isKingMoveLegal(r1, c1, r2, c2) {}
-function isQueenMoveLegal(r1, c1, r2, c2) {}
-function isBishopMoveLegal(r1, c1, r2, c2) {}
-function isKnightMoveLegal(r1, c1, r2, c2) {}
+function isKingMoveLegal(r1, c1, r2, c2) {
+  return (Math.abs(r1 - r2) <= 1 && Math.abs(c1 - c2) <= 1 && !isAlly(r2, c2));
+}
+
+function isQueenMoveLegal(r1, c1, r2, c2) {
+  return (isRookMoveLegal(r1, c1, r2, c2) || isBishopMoveLegal(r1, c1, r2, c2));
+}
+
+function isBishopMoveLegal(r1, c1, r2, c2) {
+  if(Math.abs(r1 - r2) != Math.abs(c1 - c2)) { return false; }
+  if(r1 < r2) {
+    if(c1 < c2) {
+      for(let i = 1; c1+i <= c2 && r1+i <= r2; i++) {
+        if(isAlly(r1+i, c1+i)) { return false; }
+      }
+      return true;
+    }
+    else if(c2 < c1) {
+      for(let i = 1; c2+i < c1 && r1+i <= r2; i++) {
+        if(isAlly(r1+i, c1-i)) { return false; }
+      }
+      return true;
+    }
+  }
+  else if(r2 < r1) {
+    if(c1 < c2) {
+      for(let i = 1; c1+i <= c2 && r2+i < r1; i++) {
+        if(isAlly(r1-i, c1+i)) { return false; }
+      }
+      return true;
+    }
+    else if(c2 < c1) {
+      for(let i = 1; c2+i < c1 && r2+i < r1; i++) {
+        if(isAlly(r1-i, c1-i)) { return false; }
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+function isKnightMoveLegal(r1, c1, r2, c2) {
+  if(r1+1 == r2) {
+    if(c1+2 == c2) { return !isAlly(r2, c2); }
+    if(c1-2 == c2) { return !isAlly(r2, c2); }
+  }
+  else if(r1-1 == r2) {
+    if(c1+2 == c2) { return !isAlly(r2, c2); }
+    if(c1-2 == c2) { return !isAlly(r2, c2); }
+  }
+  if(r1+2 == r2) {
+    if(c1+1 == c2) { return !isAlly(r2, c2); }
+    if(c1-1 == c2) { return !isAlly(r2, c2); }
+  }
+  else if(r1-2 == r2) {
+    if(c1+1 == c2) { return !isAlly(r2, c2); }
+    if(c1-1 == c2) { return !isAlly(r2, c2); }
+  }
+  return false;
+}
+
 function isRookMoveLegal(r1, c1, r2, c2) {
   if(r1 == r2) {
     if(c1 < c2) {

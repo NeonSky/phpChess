@@ -80,9 +80,6 @@
   function readHistoryFile($roomId, $mode) {
     if(!file_exists(getHistoryFilePath($roomId))) { resetHistoryFile($roomId); }
 
-    //addCsvEntry(getHistoryFilePath($roomId), ["a4:c5"]);
-    //addCsvEntry(getHistoryFilePath($roomId), ["d6:f2"]);
-
     if($historyFile = openHistoryFile($roomId, "r")) {
       $moveHistory = array();
       if($mode == 1) {
