@@ -7,10 +7,6 @@
   define('defaultRoomFile', dirname(__DIR__)."/res/defaultRoomFile.json", true);
 
   function getRoomFilePath($roomId) {
-    return dirname(__DIR__)."/rooms/room" . $roomId . ".csv";
-  }
-
-  function getRoomFilePath2($roomId) {
     return dirname(__DIR__)."/rooms/room" . $roomId . ".json";
   }
 
@@ -20,8 +16,8 @@
   }
 
   function resetRoomFile($roomId) {
-    $filePath = getRoomFilePath2($roomId);
-    if($json = file_get_contents(defaultRoomFile)) {}
+    $filePath = getRoomFilePath($roomId);
+    if($json = file_get_contents(defaultRoomFile)) {
       file_put_contents($filePath, $json);
     }
   }
@@ -41,7 +37,7 @@
   }
 
   function addMoveEntry($roomId, $move) {
-    $filePath = getRoomFilePath2($roomId);
+    $filePath = getRoomFilePath($roomId);
     $fileData = json_decode(file_get_contents($filePath), true);
     array_push($fileData['moveHistory'], $move);
     file_put_contents($filePath, json_encode($fileData));
@@ -59,10 +55,10 @@
   }
 
   function getMoveHistory($roomId, $onlyLatest) {
-    $filePath = getRoomFilePath2($roomId);
+    $moveHistory = array();
+    $filePath = getRoomFilePath($roomId);
     if($json = file_get_contents($filePath)) {
       $fileData = json_decode($json, true);
-      $moveHistory = array();
       if($onlyLatest && count($fileData['moveHistory']) > 0) {
         array_push($moveHistory, $fileData['moveHistory'][count($fileData['moveHistory'])-1]);
       }
@@ -73,7 +69,36 @@
       }
       return $moveHistory;
     }
-    return false;
+    else { resetRoomFile($roomId); }
+    return $moveHistory;
+  }
+
+  function getPlayerId($roomId, $playerNr) {
+    $filePath = getRoomFilePath($roomId);
+    if($json = file_get_contents($filePath)) {
+      $fileData = json_decode($json, true);
+      return $fileData['player'.$playerNr.'Id'];
+    }
+  }
+
+  function setPlayerId($roomId, $playerNr, $playerId) {
+    echo "setting id";
+    $filePath = getRoomFilePath($roomId);
+    if($json = file_get_contents($filePath)) {
+      $fileData = json_decode($json, true);
+      $fileData['player'.$playerNr.'Id'] = $playerId;
+      file_put_contents($filePath, json_encode($fileData));
+    }
+  }
+
+  function getMyColor($roomId, $playerId) {
+    $filePath = getRoomFilePath($roomId);
+    if($json = file_get_contents($filePath)) {
+      $fileData = json_decode($json, true);
+      if($playerId == $fileData['player1Id']) return 'l';
+      if($playerId == $fileData['player2Id']) return 'd';
+    }
+    return '';
   }
 
 ?>

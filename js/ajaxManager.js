@@ -19,7 +19,7 @@ function receivedMoveHistory(mode, callback) {
   if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     let xmlResponse = xmlHttp.responseXML;
     if(xmlResponse) {
-      console.log(xmlResponse);
+      //console.log(xmlResponse);
       let responseElement = xmlResponse.documentElement;
       let resChildren = responseElement.children;
       let moves = [];
@@ -52,7 +52,7 @@ function receivedMoveResponse(move) {
     let xmlResponse = xmlHttp.responseXML;
     if(xmlResponse) {
       myLatestMove = move;
-      console.log(xmlResponse);
+      //console.log(xmlResponse);
     }
   }
 }

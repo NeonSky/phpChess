@@ -22,7 +22,7 @@
   }
   else if(!is_null($roomId) && !is_null($move)) {
     echo $move;
-    addCsvEntry(getRoomFilePath($roomId), [$move]);
+    //addCsvEntry(getRoomFilePath($roomId), [$move]);
     addMoveEntry($roomId, $move);
   }
 

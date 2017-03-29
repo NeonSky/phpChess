@@ -28,7 +28,8 @@
   var chessTiles = new Array(chessBoardWidth);
   for(var i = 0; i < chessBoardWidth; i++) chessTiles[i] = new Array(chessBoardHeight);
 
-  const myColor = "<?php echo $_GET["p"]; ?>" == "d" ? "d" : "l";
+  const myColor = '<?php echo getMyColor($roomId, $_COOKIE[$roomId]); ?>';
+  console.log(myColor);
   var latestMove, myLatestMove;
   var isMyTurn = true;
 
