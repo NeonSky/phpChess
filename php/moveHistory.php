@@ -2,8 +2,8 @@
   header('Content-Type: text/xml');
   echo '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>';
 
-  $roomId = $_GET['room'];
   $mode = null;
+  $roomId = $_GET['room'];
   if(isset($_GET['mode'])) { $mode = $_GET['mode']; }
   $move = null;
   if(isset($_GET['move'])) { $move = $_GET['move']; }
@@ -13,21 +13,17 @@
   echo '<response>';
 
   if(!is_null($roomId) && !is_null($mode)) {
-    if($mh = readHistoryFile($roomId, $mode)) {
-      for($r = 0; $r < count($mh); $r++) {
-        for($c = 0; $c < count($mh[$r]); $c++) {
-          if($mh[$r][$c]) {
-            echo '<move>';
-            echo $mh[$r][$c];
-            echo '</move>';
-          }
-        }
-      }
+    $moveHistory = getMoveHistory($roomId, (bool)$mode);
+    for($i = 0; $i < count($moveHistory); $i++) {
+      echo '<move>';
+      echo $moveHistory[$i];
+      echo '</move>';
     }
   }
   else if(!is_null($roomId) && !is_null($move)) {
     echo $move;
-    addCsvEntry(getHistoryFilePath($roomId), [$move]);
+    addCsvEntry(getRoomFilePath($roomId), [$move]);
+    addMoveEntry($roomId, $move);
   }
 
   echo '</response>';

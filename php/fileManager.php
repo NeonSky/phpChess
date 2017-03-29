@@ -1,33 +1,29 @@
 <?php
 
-  // TODO: Rename board state to start state
-  $defaultBoardState = array(
-    array('dr','dh','db','dq','dk','db','dh','dr'),
-    array('dp','dp','dp','dp','dp','dp','dp','dp'),
-    array('00','00','00','00','00','00','00','00'),
-    array('00','00','00','00','00','00','00','00'),
-    array('00','00','00','00','00','00','00','00'),
-    array('00','00','00','00','00','00','00','00'),
-    array('lp','lp','lp','lp','lp','lp','lp','lp'),
-    array('lr','lh','lb','lq','lk','lb','lh','lr')
-  );
+  define('defaultBoardStateFilePath',
+         dirname(__DIR__)."/res/defaultBoardState.csv",
+         true);
+
+  define('defaultRoomFile', dirname(__DIR__)."/res/defaultRoomFile.json", true);
 
   function getRoomFilePath($roomId) {
     return dirname(__DIR__)."/rooms/room" . $roomId . ".csv";
   }
 
-  function getHistoryFilePath($roomId) {
-    return dirname(__DIR__)."/rooms/room" . $roomId . "-history.csv";
+  function getRoomFilePath2($roomId) {
+    return dirname(__DIR__)."/rooms/room" . $roomId . ".json";
+  }
+
+  function resetFile($filePath) {
+    $file = fopen($filePath, 'w');
+    fclose($file);
   }
 
   function resetRoomFile($roomId) {
-    updateRoomFile($roomId, $GLOBALS['defaultBoardState']);
-  }
-
-  function resetHistoryFile($roomId) {
-    $filePath = getHistoryFilePath($roomId);
-    $file = fopen($filePath, 'w');
-    fclose($file);
+    $filePath = getRoomFilePath2($roomId);
+    if($json = file_get_contents(defaultRoomFile)) {}
+      file_put_contents($filePath, $json);
+    }
   }
 
   function openRoomFile($roomId, $mode) {
@@ -38,68 +34,46 @@
     else { return 0; }
   }
 
-  function openHistoryFile($roomId, $mode) {
-    if(is_numeric($roomId)) {
-      $filePath = getHistoryFilePath($roomId);
-      return fopen($filePath, $mode);
-    }
-    else { return 0; }
-  }
-
-  function updateRoomFile($roomId, $boardState) {
-    if($roomFile = openRoomFile($roomId, "w")) {
-      foreach($boardState as $row) {
-        fputcsv($roomFile, $row);
-      }
-      fclose($roomFile);
-      return 1;
-    }
-    else { return 0; }
-  }
-
   function addCsvEntry($filePath, $entry) {
     $file = fopen($filePath, 'a');
     fputcsv($file, $entry);
     fclose($file);
   }
 
-  function readRoomFile($roomId) {
-    if(!file_exists(getRoomFilePath($roomId))) { resetRoomFile($roomId); }
-
-    if($roomFile = openRoomFile($roomId, "r")) {
-      $boardState = array();
-      while(!feof($roomFile)) {
-        array_push($boardState, fgetcsv($roomFile));
-      }
-      fclose($roomFile);
-      return $boardState;
-    }
-    else { return 0; }
+  function addMoveEntry($roomId, $move) {
+    $filePath = getRoomFilePath2($roomId);
+    $fileData = json_decode(file_get_contents($filePath), true);
+    array_push($fileData['moveHistory'], $move);
+    file_put_contents($filePath, json_encode($fileData));
   }
 
-  function readHistoryFile($roomId, $mode) {
-    if(!file_exists(getHistoryFilePath($roomId))) { resetHistoryFile($roomId); }
+  function getDefaultBoardState() {
+    if($file = fopen(defaultBoardStateFilePath, 'r')) {
+      $defaultBoardState = array();
+      while(!feof($file)) {
+        array_push($defaultBoardState, fgetcsv($file));
+      }
+      fclose($file);
+      return $defaultBoardState;
+    }
+  }
 
-    if($historyFile = openHistoryFile($roomId, "r")) {
+  function getMoveHistory($roomId, $onlyLatest) {
+    $filePath = getRoomFilePath2($roomId);
+    if($json = file_get_contents($filePath)) {
+      $fileData = json_decode($json, true);
       $moveHistory = array();
-      if($mode == 1) {
-        $lastLine = null;
-        while(!feof($historyFile)) {
-          $line = fgetcsv($historyFile);
-          if($line) $lastLine = $line;
-        }
-        if($lastLine) array_push($moveHistory, $lastLine);
+      if($onlyLatest && count($fileData['moveHistory']) > 0) {
+        array_push($moveHistory, $fileData['moveHistory'][count($fileData['moveHistory'])-1]);
       }
-      else if($mode == 0) {
-        while(!feof($historyFile)) {
-          $line = fgetcsv($historyFile);
-          array_push($moveHistory, $line);
+      else {
+        for($i = 0; $i < count($fileData['moveHistory']); $i++) {
+          array_push($moveHistory, $fileData['moveHistory'][$i]);
         }
       }
-      fclose($historyFile);
       return $moveHistory;
     }
-    else { return 0; }
+    return false;
   }
 
 ?>

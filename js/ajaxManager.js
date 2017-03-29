@@ -19,6 +19,7 @@ function receivedMoveHistory(mode, callback) {
   if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     let xmlResponse = xmlHttp.responseXML;
     if(xmlResponse) {
+      console.log(xmlResponse);
       let responseElement = xmlResponse.documentElement;
       let resChildren = responseElement.children;
       let moves = [];
@@ -38,7 +39,7 @@ function receivedMoveHistory(mode, callback) {
 function sendMoveRequest(move) {
   if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
     xmlHttp.onreadystatechange = function() {
-      receivedMoveResponse();
+      receivedMoveResponse(move);
     }
     xmlHttp.open("GET", "php/moveHistory.php?room="+roomId+"&move="+move, true);
     xmlHttp.send(null);
@@ -46,11 +47,12 @@ function sendMoveRequest(move) {
 }
 
 // TODO: remove me
-function receivedMoveResponse() {
+function receivedMoveResponse(move) {
   if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     let xmlResponse = xmlHttp.responseXML;
     if(xmlResponse) {
-      //console.log(xmlResponse);
+      myLatestMove = move;
+      console.log(xmlResponse);
     }
   }
 }

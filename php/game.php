@@ -28,8 +28,9 @@
   var chessTiles = new Array(chessBoardWidth);
   for(var i = 0; i < chessBoardWidth; i++) chessTiles[i] = new Array(chessBoardHeight);
 
-  const myColor = "l";
-  var latestMove;
+  const myColor = "<?php echo $_GET["p"]; ?>" == "d" ? "d" : "l";
+  var latestMove, myLatestMove;
+  var isMyTurn = true;
 
   startGame();
 
@@ -70,11 +71,11 @@
   }
 
   function spawnChessPieces() {
-    let boardState = <?php echo json_encode(readRoomFile($roomId)); ?>;
+    let defaultBoardState = <?php echo json_encode(getDefaultBoardState()); ?>;
 
     for(let r = 0; r < chessBoardHeight; r++) {
       for(let c = 0; c < chessBoardWidth; c++) {
-        let name = boardState[r][c];
+        let name = defaultBoardState[r][c];
         if(name != undefined) { createChessPiece(name, r, c); }
       }
     }

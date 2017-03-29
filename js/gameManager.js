@@ -31,6 +31,8 @@ function moveChessPiece(r1, c1, r2, c2) {
     if(isCheckMate()) {}
     selectedChessPiece = null;
   }
+  if(latestMove == myLatestMove) { isMyTurn = false; }
+  else { myTurn = true; }
 }
 
 // r: row, c: column
@@ -61,7 +63,7 @@ function getMoveAction(moveNotation) {
 function isOpponent(r, c) {
   let chessPiece = chessTiles[r][c].firstChild
   if(chessPiece) {
-    if(chessPiece.name.charAt(0) != myColor) return true;
+    if(chessPiece.name.charAt(0) != myColor) { return true; }
   }
   return false;
 }
@@ -69,7 +71,7 @@ function isOpponent(r, c) {
 function isAlly(r, c) {
   let chessPiece = chessTiles[r][c].firstChild
   if(chessPiece) {
-    if(chessPiece.name.charAt(0) == myColor) return true;
+    if(chessPiece.name.charAt(0) == myColor) { return true; }
   }
   return false;
 }
@@ -83,7 +85,7 @@ function isOutOfBounds(r1, c1, r2, c2) {
 }
 
 function isMoveLegal(r1, c1, r2, c2) {
-  console.log(c1 + ":" + r1 + ", " + c2 + ":" + r2);
+  //console.log(c1 + ":" + r1 + ", " + c2 + ":" + r2);
   if(r1 == r2 && c1 == c2) return false;
   if(isOutOfBounds(r1, c1, r2, c2)) return false;
   if(isAlly(r2, c2)) { return false; }
@@ -212,15 +214,16 @@ function isRookMoveLegal(r1, c1, r2, c2) {
 }
 
 function isPawnMoveLegal(r1, c1, r2, c2) {
-  console.log("Pawn move");
+  let dir = myColor == "l" ? 1 : -1;
+  let startRow = dir == 1 ? 6 : 1;
   if(isOpponent(r2, c2)) {
-    if(r2 == r1-1 && c2 == c1-1) { return true; }
-    if(r2 == r1-1 && c2 == c1+1) { return true; }
+    if(r2 == r1-dir && c2 == c1-dir) { return true; }
+    if(r2 == r1-dir && c2 == c1+dir) { return true; }
   } else {
-    if(r2 == r1-1 && c2 == c1) { return true; }
-    if(r2 == r1-2 && r1 == 6 && c2 == c1) { return true; }
+    if(r2 == r1-dir && c2 == c1) { return true; }
+    if(r2 == r1-2*dir && r1 == startRow && c2 == c1) { return true; }
   }
-  console.log(getMoveNotation(r1, c1, r2, c2));
+  //console.log(getMoveNotation(r1, c1, r2, c2));
   return false;
 }
 

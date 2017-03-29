@@ -1,3 +1,10 @@
+<?php
+  // Global Variables Setup
+  $roomId = $_GET['room'];
+
+  include "./php/cookieManager.php";
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -18,10 +25,6 @@
 </html>
 
 <?php
-  // Global Variables Setup
-  $roomId = $_GET['room'];
-
-  // PHP includes
   include "./php/fileManager.php";
   include "./php/game.php";
 ?>
