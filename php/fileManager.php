@@ -39,7 +39,7 @@
   function addMoveEntry($roomId, $move) {
     $filePath = getRoomFilePath($roomId);
     $fileData = json_decode(getFileContent($filePath), true);
-    $fileData['playerTurn'] = $fileData['playerTurn'] == 'l' ? 'd' : 'l';
+    $fileData['playerTurn'] = ($fileData['playerTurn'] == 'l') ? 'd' : 'l';
     array_push($fileData['moveHistory'], $move);
     file_put_contents($filePath, json_encode($fileData));
   }
@@ -92,12 +92,15 @@
     }
   }
 
-  function isMyTurn($roomId, $playerColor) {
+  function isMyTurn($roomId, $playerId) {
+    $playerColor = getMyColor($roomId, $playerId);
     $filePath = getRoomFilePath($roomId);
     if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
+      return 1;
       return ($fileData['playerTurn'] == $playerColor);
     }
+    return 0;
   }
 
   function getMyColor($roomId, $playerId) {
@@ -114,6 +117,7 @@
     if(!file_exists($filePath)) {
       $file = fopen($filePath, 'w');
       fwrite($file, "");
+      chmod($filePath, 777);
     }
     return file_get_contents($filePath);
   }

@@ -68,6 +68,18 @@
   height: 100%;
 }
 
+.selectedTile {
+  background: green !important;
+}
+
+.movableTile {
+  background: yellow !important;
+}
+
+.enemyTile {
+  background: red !important;
+}
+
 .lightTile { background: #eaca94; }
 .darkTile { background: #b78b5a; }
 

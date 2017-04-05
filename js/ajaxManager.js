@@ -6,6 +6,7 @@ mode parameter
   1: fetch only the latest entry
 */
 function fetchMoveHistory(mode, callback) {
+  if(isMyTurn) { return; }
   if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
     xmlHttp.onreadystatechange = function() {
       receivedMoveHistory(mode, callback);
@@ -19,7 +20,6 @@ function receivedMoveHistory(mode, callback) {
   if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     let xmlResponse = xmlHttp.responseXML;
     if(xmlResponse) {
-      //console.log(xmlResponse);
       let responseElement = xmlResponse.documentElement;
       let resChildren = responseElement.children;
       let moves = [];
@@ -50,8 +50,8 @@ function receivedMoveResponse(move) {
   if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     let xmlResponse = xmlHttp.responseXML;
     if(xmlResponse) {
+      isMyTurn = false;
       myLatestMove = move;
-      //console.log(xmlResponse);
     }
   }
 }

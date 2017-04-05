@@ -31,7 +31,7 @@
   const myId = '<?php echo $_COOKIE[$roomId]; ?>';
   const myColor = '<?php echo getMyColor($roomId, $_COOKIE[$roomId]); ?>';
   var latestMove, myLatestMove;
-  var isMyTurn = true;
+  var isMyTurn = '<?php echo isMyTurn($roomId, $_COOKIE[$roomId]); ?>';
 
   startGame();
 
@@ -39,7 +39,7 @@
     buildChessBoard();
     spawnChessPieces();
     fetchMoveHistory(0, loadMoveHistory);
-    setInterval(function() { fetchMoveHistory(1, loadMoveHistory); }, 100);
+    setInterval(function() { fetchMoveHistory(1, loadMoveHistory); }, 200);
   }
 
   function loadMoveHistory(moveHistory) {
@@ -49,6 +49,7 @@
       if(latestMove != moveHistory[0]) {
         let move = getMoveAction(moveHistory[0]);
         moveChessPiece(move.r1, move.c1, move.r2, move.c2);
+        if(isMyTurn) { isMyTurn = false; }
       }
     }
     else {

@@ -1,4 +1,5 @@
 var selectedChessPiece;
+var coloredTiles = [];
 
 function onChessTileClick(e) {
   if(selectedChessPiece != undefined) {
@@ -10,7 +11,29 @@ function onChessTileClick(e) {
   }
   else if(e.srcElement.firstChild != undefined) {
     selectChessPiece(e.srcElement.firstChild, e.target.row, e.target.col);
+    colorTiles(e);
   }
+}
+
+function colorTiles(e) {
+  clearSelection();
+  let tile = selectedChessPiece.element.parentElement;
+  // King version
+  for(let c = -1; c <= 1; c++) {
+    for(let r = -1; r <= 1; r++) {
+      if(r == 0 && c == 0) { continue; }
+      coloredTiles.push(chessTiles[tile.row+r][tile.col+c]);
+      chessTiles[tile.row+r][tile.col+c].prevClass = chessTiles[tile.row+r][tile.col+c].className;
+      chessTiles[tile.row+r][tile.col+c].className += " selectedTile";
+    }
+  }
+}
+
+function clearSelection() {
+  for(let i = 0; i < coloredTiles.length; i++) {
+    coloredTiles[i].className = coloredTiles[i].prevClass;
+  }
+  coloredTiles = [];
 }
 
 function selectChessPiece(element, row, col) {
