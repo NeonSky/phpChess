@@ -7,6 +7,8 @@
   if(isset($_GET['mode'])) { $mode = $_GET['mode']; }
   $move = null;
   if(isset($_GET['move'])) { $move = $_GET['move']; }
+  $playerId = null;
+  if(isset($_GET['playerId'])) { $playerId = $_GET['playerId']; }
 
   include "./fileManager.php";
 
@@ -20,10 +22,9 @@
       echo '</move>';
     }
   }
-  else if(!is_null($roomId) && !is_null($move)) {
-    echo $move;
-    //addCsvEntry(getRoomFilePath($roomId), [$move]);
-    addMoveEntry($roomId, $move);
+  else if(!is_null($roomId) && !is_null($move) && !is_null($playerId)) {
+    $playerColor = getMyColor($roomId, $playerId);
+    if(isMyTurn($roomId, $playerColor)) { addMoveEntry($roomId, $move); }
   }
 
   echo '</response>';

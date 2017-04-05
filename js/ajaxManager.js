@@ -41,12 +41,11 @@ function sendMoveRequest(move) {
     xmlHttp.onreadystatechange = function() {
       receivedMoveResponse(move);
     }
-    xmlHttp.open("GET", "php/moveHistory.php?room="+roomId+"&move="+move, true);
+    xmlHttp.open("GET", "php/moveHistory.php?room="+roomId+"&move="+move+"&playerId="+myId, true);
     xmlHttp.send(null);
   }
 }
 
-// TODO: remove me
 function receivedMoveResponse(move) {
   if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     let xmlResponse = xmlHttp.responseXML;

@@ -6,6 +6,7 @@ function onChessTileClick(e) {
     if(isMoveLegal(tile.row, tile.col, e.target.row, e.target.col)) {
       sendMoveRequest(getMoveNotation(tile.row, tile.col, e.target.row, e.target.col));
     }
+    selectedChessPiece = undefined;
   }
   else if(e.srcElement.firstChild != undefined) {
     selectChessPiece(e.srcElement.firstChild, e.target.row, e.target.col);
