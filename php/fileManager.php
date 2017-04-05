@@ -17,7 +17,7 @@
 
   function resetRoomFile($roomId) {
     $filePath = getRoomFilePath($roomId);
-    if($json = file_get_contents(defaultRoomFile)) {
+    if($json = getFileContent(defaultRoomFile)) {
       file_put_contents($filePath, $json);
     }
   }
@@ -38,7 +38,7 @@
 
   function addMoveEntry($roomId, $move) {
     $filePath = getRoomFilePath($roomId);
-    $fileData = json_decode(file_get_contents($filePath), true);
+    $fileData = json_decode(getFileContent($filePath), true);
     $fileData['playerTurn'] = $fileData['playerTurn'] == 'l' ? 'd' : 'l';
     array_push($fileData['moveHistory'], $move);
     file_put_contents($filePath, json_encode($fileData));
@@ -58,7 +58,7 @@
   function getMoveHistory($roomId, $onlyLatest) {
     $moveHistory = array();
     $filePath = getRoomFilePath($roomId);
-    if($json = file_get_contents($filePath)) {
+    if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
       if($onlyLatest && count($fileData['moveHistory']) > 0) {
         array_push($moveHistory, $fileData['moveHistory'][count($fileData['moveHistory'])-1]);
@@ -76,7 +76,7 @@
 
   function getPlayerId($roomId, $playerNr) {
     $filePath = getRoomFilePath($roomId);
-    if($json = file_get_contents($filePath)) {
+    if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
       return $fileData['player'.$playerNr.'Id'];
     }
@@ -85,7 +85,7 @@
 
   function setPlayerId($roomId, $playerNr, $playerId) {
     $filePath = getRoomFilePath($roomId);
-    if($json = file_get_contents($filePath)) {
+    if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
       $fileData['player'.$playerNr.'Id'] = $playerId;
       file_put_contents($filePath, json_encode($fileData));
@@ -94,7 +94,7 @@
 
   function isMyTurn($roomId, $playerColor) {
     $filePath = getRoomFilePath($roomId);
-    if($json = file_get_contents($filePath)) {
+    if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
       return ($fileData['playerTurn'] == $playerColor);
     }
@@ -102,12 +102,20 @@
 
   function getMyColor($roomId, $playerId) {
     $filePath = getRoomFilePath($roomId);
-    if($json = file_get_contents($filePath)) {
+    if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
       if($playerId == $fileData['player1Id']) { return 'l'; }
       if($playerId == $fileData['player2Id']) { return 'd'; }
     }
     return '';
+  }
+
+  function getFileContent($filePath) {
+    if(!file_exists($filePath)) {
+      $file = fopen($filePath, 'w');
+      fwrite($file, "");
+    }
+    return file_get_contents($filePath);
   }
 
 ?>
