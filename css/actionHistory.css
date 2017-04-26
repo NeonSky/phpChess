@@ -1,7 +1,25 @@
 #actionPanel {
-  /*border: 2px solid black;
-  margin-right: 20px;*/
   float: left;
   width: 20%;
   height: 100%;
+  border-right: 1px solid black;
+}
+
+table {
+	width: 100%;
+}
+
+th {
+	height: 40px;
+	background-color: #eaca94;
+}
+
+td {
+	height: 30px;
+}
+
+table, th, td {
+	border-collapse: collapse;
+	border-bottom: 1px black solid;
+	text-align: center;
 }

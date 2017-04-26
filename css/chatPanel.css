@@ -1,5 +1,51 @@
 #chatPanel {
-  float: left;
-  width: 20%;
-  height: 100%;
+	float: left;
+	width: 20%;
+	height: 100%;
+	border-left: black solid 1px;
+}
+
+#chatHeader {
+	width: 100%;
+	height: 40px;
+	background-color: #eaca94;
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-size: 24px;
+}
+
+#messageFeed {
+	width: 100%;
+	height: 40%;
+}
+
+.msg-wrapper {
+	float: left;
+	width: 100%;
+}
+
+.msg {
+	margin: 10px;
+	padding: 10px;
+	border-radius: 20px;
+	font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+}
+
+.msgFromOther {
+	float: left;
+	background-color: #d2d2d2;
+}
+
+.msgFromMe {
+	float: right;
+	background-color: #79ff9a;
+}
+
+textarea {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 10%;
+	border-top: black solid 1px;
 }

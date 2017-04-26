@@ -16,7 +16,9 @@
   margin-left: auto;
   margin-right: auto;
   width: 50vw;
+  max-width: 70vh;
   height: 5vw;
+  max-height: 7vh;
 }
 
 .leftLabel {
@@ -30,22 +32,12 @@
 }
 
 .boardLabel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   float: left;
-  background-color: #6b5134;
   text-align: center;
-}
-
-.boardLabel > span {
-  display: inline-block;
-  width: 100%;
-}
-
-.leftLabel > span { line-height: 12.5%; }
-.botLabel > span { line-height: 100%; }
-
-.boardLabel > p {
-  display: inline-block;
-  vertical-align: middle;
+  background-color: #6b5134;
 }
 
 #chessBoard {
@@ -53,8 +45,8 @@
   margin-right: auto;
   width: 50vw;
   height: 50vw;
-  max-width: 80vh;
-  max-height: 80vh;
+  max-width: 70vh;
+  max-height: 70vh;
 }
 
 .chessRow {
