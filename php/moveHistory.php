@@ -22,8 +22,7 @@
     }
   }
   else if(!is_null($roomId) && !is_null($move) && !is_null($playerId)) {
-    $playerColor = getMyColor($roomId, $playerId);
-    if(isMyTurn($roomId, $playerColor)) { addMoveEntry($roomId, $move); }
+    if(isMyTurn($roomId, $playerId)) { addMoveEntry($roomId, $move); }
   }
   echo '</response>';
 
