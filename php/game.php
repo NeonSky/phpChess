@@ -24,7 +24,8 @@
   const chessBoardHeight = 8;
 
   const roomId = <?php echo json_encode($roomId); ?>;
-  var chessBoard = document.getElementById('chessBoard');
+  const actionTable = document.getElementById('actionTable');
+  const chessBoard = document.getElementById('chessBoard');
   var chessTiles = new Array(chessBoardWidth);
   for(var i = 0; i < chessBoardWidth; i++) chessTiles[i] = new Array(chessBoardHeight);
 
@@ -44,19 +45,29 @@
   }
 
   function loadMoveHistory(moveHistory) {
-    if(moveHistory == undefined) return;
-
-    if(moveHistory.length == 1) {
-      if(latestMove != moveHistory[0]) {
-        let move = getMoveAction(moveHistory[0]);
-        moveChessPiece(move.r1, move.c1, move.r2, move.c2);
-        if(isMyTurn) { isMyTurn = false; }
-      }
+    if(moveHistory == undefined || latestMove == moveHistory[0]) return;
+    for(let i = 0; i < moveHistory.length; i++) {
+      let move = getMoveAction(moveHistory[i]);
+      moveChessPiece(move.r1, move.c1, move.r2, move.c2);
     }
-    else {
-      for(let i = 0; i < moveHistory.length; i++) {
-        let move = getMoveAction(moveHistory[i]);
-        moveChessPiece(move.r1, move.c1, move.r2, move.c2);
+    updateActionPanel(moveHistory);
+  }
+
+  function updateActionPanel(moveHistory) {
+    let tbody = actionTable.children[0];
+    let lastRow = tbody.children[tbody.children.length-1];
+    let entriesAdded = 0;
+    while(entriesAdded < moveHistory.length) {
+      if(lastRow.children.length >= 3) {
+        lastRow = appendElement(tbody, 'tr', '');
+      } else {
+        if(lastRow.children.length == 0) {
+          let rowNumber = appendElement(lastRow, 'td');
+          rowNumber.innerHTML = (tbody.children.length-1)+".";
+        }
+        let entry = appendElement(lastRow, 'td');
+        entry.innerHTML = moveHistory[entriesAdded].toUpperCase();
+        entriesAdded++;
       }
     }
   }

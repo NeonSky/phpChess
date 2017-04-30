@@ -48,10 +48,11 @@ function sendMoveRequest(move) {
 function receivedMoveResponse(move) {
   if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     let xmlResponse = xmlHttp.responseXML;
-    console.log(xmlResponse);
     if(xmlResponse) {
-      isMyTurn = false;
-      myLatestMove = move;
+      if(xmlResponse.documentElement.innerHTML == "true") {
+        isMyTurn = false;
+        myLatestMove = move;
+      }
     }
   }
 }

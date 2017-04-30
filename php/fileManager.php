@@ -15,6 +15,11 @@
     fclose($file);
   }
 
+  function getFileContent($filePath) {
+    if(!file_exists($filePath)) { resetFile($filePath); }
+    return file_get_contents($filePath);
+  }
+
   function resetRoomFile($roomId) {
     $filePath = getRoomFilePath($roomId);
     if($json = getFileContent(defaultRoomFile)) {
@@ -111,15 +116,6 @@
       if($playerId == $fileData['player2Id']) { return 'd'; }
     }
     return '';
-  }
-
-  function getFileContent($filePath) {
-    if(!file_exists($filePath)) {
-      $file = fopen($filePath, 'w');
-      fwrite($file, "");
-      chmod($filePath, 777);
-    }
-    return file_get_contents($filePath);
   }
 
 ?>
