@@ -18,18 +18,19 @@
     'lh': 'light-knight',
     'lr': 'light-rook',
     'lp': 'light-pawn'
-  }
+  };
 
   const chessBoardWidth = 8;
   const chessBoardHeight = 8;
 
-  var roomId = <?php echo json_encode($roomId); ?>;
+  const roomId = <?php echo json_encode($roomId); ?>;
   var chessBoard = document.getElementById('chessBoard');
   var chessTiles = new Array(chessBoardWidth);
   for(var i = 0; i < chessBoardWidth; i++) chessTiles[i] = new Array(chessBoardHeight);
 
   const myId = '<?php echo $_COOKIE[$roomId]; ?>';
   const myColor = '<?php echo getMyColor($roomId, $_COOKIE[$roomId]); ?>';
+  console.log("my id: " + myId + ", my color: " + myColor);
   var latestMove, myLatestMove;
   var isMyTurn = '<?php echo isMyTurn($roomId, $_COOKIE[$roomId]); ?>';
 
@@ -88,7 +89,7 @@
     if(imgName != undefined) {
       var chessPiece = appendElement(chessTiles[r][c], 'img', 'chessPiece');
       chessPiece.name = dbName;
-      chessPiece.src = './res/' + imgName + '.svg';
+      chessPiece.src = './res/pieces/' + imgName + '.svg';
     }
     return chessPiece;
   }

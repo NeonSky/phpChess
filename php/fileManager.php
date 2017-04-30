@@ -1,10 +1,10 @@
 <?php
 
   define('defaultBoardStateFilePath',
-         dirname(__DIR__)."/res/defaultBoardState.csv",
-         true);
+         dirname(__DIR__)."/res/defaultBoardState.csv", true);
 
-  define('defaultRoomFile', dirname(__DIR__)."/res/defaultRoomFile.json", true);
+  define('defaultRoomFile',
+         dirname(__DIR__)."/res/defaultRoomFile.json", true);
 
   function getRoomFilePath($roomId) {
     return dirname(__DIR__)."/rooms/room" . $roomId . ".json";
@@ -61,7 +61,8 @@
     if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
       if($onlyLatest && count($fileData['moveHistory']) > 0) {
-        array_push($moveHistory, $fileData['moveHistory'][count($fileData['moveHistory'])-1]);
+        array_push($moveHistory,
+                   $fileData['moveHistory'][count($fileData['moveHistory'])-1]);
       }
       else {
         for($i = 0; $i < count($fileData['moveHistory']); $i++) {
@@ -97,7 +98,6 @@
     $filePath = getRoomFilePath($roomId);
     if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
-      return 1;
       return ($fileData['playerTurn'] == $playerColor);
     }
     return 0;

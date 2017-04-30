@@ -1,9 +1,7 @@
 <?php
   $maxId = 100000;
-  $cookieTTL = 5*60;//2*60*60; // 2h
-
+  $cookieTTL = 2*60*60; // 2h
   if(!isset($_COOKIE[$roomId])) { assignCookie(); }
-  //echo $_COOKIE[$roomId];
 
   function assignCookie() {
     $cookieValue = -1;

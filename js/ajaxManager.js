@@ -6,7 +6,6 @@ mode parameter
   1: fetch only the latest entry
 */
 function fetchMoveHistory(mode, callback) {
-  if(isMyTurn) { return; }
   if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
     xmlHttp.onreadystatechange = function() {
       receivedMoveHistory(mode, callback);

@@ -16,6 +16,7 @@ function onChessTileClick(e) {
 }
 
 function colorTiles(e) {
+  return;
   clearSelection();
   let tile = selectedChessPiece.element.parentElement;
   // King version
