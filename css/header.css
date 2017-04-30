@@ -6,7 +6,19 @@
 }
 
 #header > h1 {
-	color: white;
-	text-align: center;
 	padding-top: 10px;
+	text-align: center;
+	color: white;
+}
+
+#header > h3 {
+	padding-top: 10px;
+	text-align: center;
+	color: white;
+}
+
+#infoIcon {
+	position: absolute;
+	top: 40px;
+	left: 56%;
 }

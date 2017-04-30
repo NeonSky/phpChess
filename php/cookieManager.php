@@ -1,6 +1,6 @@
 <?php
   $maxId = 100000;
-  $cookieTTL = 2*60*60; // 2h
+  $cookieTTL = 24*60*60; // 24h
   if(!isset($_COOKIE[$roomId])) { assignCookie(); }
 
   function assignCookie() {

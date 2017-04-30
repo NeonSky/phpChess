@@ -43,10 +43,12 @@
 
   function addMoveEntry($roomId, $move) {
     $filePath = getRoomFilePath($roomId);
-    $fileData = json_decode(getFileContent($filePath), true);
-    $fileData['playerTurn'] = ($fileData['playerTurn'] == 'l') ? 'd' : 'l';
-    array_push($fileData['moveHistory'], $move);
-    file_put_contents($filePath, json_encode($fileData));
+    if($json = getFileContent($filePath)) {
+      $fileData = json_decode($json, true);
+      $fileData['playerTurn'] = ($fileData['playerTurn'] == 'l') ? 'd' : 'l';
+      array_push($fileData['moveHistory'], $move);
+      file_put_contents($filePath, json_encode($fileData));
+    }
   }
 
   function getDefaultBoardState() {

@@ -24,6 +24,8 @@
   const chessBoardHeight = 8;
 
   const roomId = <?php echo json_encode($roomId); ?>;
+  const infoPanel = document.getElementById('infoPanel');
+  const infoIcon = document.getElementById('infoIcon');
   const actionTable = document.getElementById('actionTable');
   const chessBoard = document.getElementById('chessBoard');
   var chessTiles = new Array(chessBoardWidth);
@@ -31,17 +33,36 @@
 
   const myId = '<?php echo $_COOKIE[$roomId]; ?>';
   const myColor = '<?php echo getMyColor($roomId, $_COOKIE[$roomId]); ?>';
-  console.log("my id: " + myId + ", my color: " + myColor);
   var latestMove, myLatestMove;
   var isMyTurn = '<?php echo isMyTurn($roomId, $_COOKIE[$roomId]); ?>';
 
   startGame();
 
   function startGame() {
+    updateInfoPanel();
     buildChessBoard();
     spawnChessPieces();
     fetchMoveHistory(0, loadMoveHistory);
+    //fetchChatLog(loadChatLog);
     setInterval(function() { fetchMoveHistory(1, loadMoveHistory); }, 200);
+  }
+
+  function updateInfoPanel() {
+    console.log("my id: " + myId + ", my color: " + myColor);
+    let colorText = 'observer';
+    if(myColor) {
+      if(myColor == 'l') {
+        colorText = "white";
+        infoIcon.src = "res/pieces/light-king.svg";
+      }
+      else if(myColor == 'd') {
+        colorText = "black";
+        infoIcon.src = "res/pieces/dark-king.svg";
+      }
+      infoPanel.innerHTML = "You are player " + colorText;
+    } else {
+      infoPanel.innerHTML = "You are an observer";
+    }
   }
 
   function loadMoveHistory(moveHistory) {
@@ -57,6 +78,7 @@
     let tbody = actionTable.children[0];
     let lastRow = tbody.children[tbody.children.length-1];
     let entriesAdded = 0;
+
     while(entriesAdded < moveHistory.length) {
       if(lastRow.children.length >= 3) {
         lastRow = appendElement(tbody, 'tr', '');
@@ -70,6 +92,10 @@
         entriesAdded++;
       }
     }
+  }
+
+  function loadChatLog() {
+
   }
 
   function buildChessBoard() {
