@@ -9,7 +9,7 @@ body {
   height: 100vh;
 }
 
-#content {
+#gameContent {
 	display: flex;
 	position: relative;
 	width: 100%;

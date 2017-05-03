@@ -1,5 +1,19 @@
 var xmlHttp = new XMLHttpRequest();
 
+void fetchChatLog(callback) {
+  if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
+    xmlHttp.onreadystatechange = function() {
+      receivedChatLog(callback);
+    }
+    //xmlHttp.open("POST", "");
+    xmlHttp.send(null);
+  }
+}
+
+function receivedChatLog(callback) {
+  
+}
+
 /*
 mode parameter
   0: fetch the complete move history

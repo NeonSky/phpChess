@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <head>
-  	<title>phpChess</title>
-  </head>
-  <body>
+<?php
+  // Globals
+  $page = "index";
 
-  </body>
-</html>
+  // HTML
+  include "./components/html.php";
+?>
