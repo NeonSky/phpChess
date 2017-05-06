@@ -1,94 +1,86 @@
-var xmlHttp = new XMLHttpRequest();
+const postHeaderName = "Content-type";
+const postHeaderValue = "application/x-www-form-urlencoded";
 
-function fetchChatLog(callback) {
+function loadAjaxDoc(callback, doc, method, msg=null) {
+  let xmlHttp = new XMLHttpRequest();
   if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
     xmlHttp.onreadystatechange = function() {
-      receivedChatLog(callback);
+      if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        let xmlResponse = xmlHttp.responseXML;
+        if(xmlResponse && callback) { callback(xmlResponse.documentElement); }
+      }
     }
-    //xmlHttp.open("POST", "");
-    xmlHttp.send(null);
+    xmlHttp.open(method, doc, true);
+    if(method == "POST") {
+      xmlHttp.setRequestHeader(postHeaderName, postHeaderValue);
+    }
+    xmlHttp.send(msg);
   }
 }
 
-function receivedChatLog(callback) {
+function fetchChatLog(callback) {
+  let onlyLatest = (latestChatMessage != undefined);
+  let msg = "room=" + roomId + "&onlyLatest=" + onlyLatest;
+  loadAjaxDoc(function(chatLog) {
+    receivedChatLog(chatLog, callback);
+  }, "php/chat.php", "POST", msg);
+}
 
+function receivedChatLog(chatLog, callback) {
+  let chatEntries = chatLog.children;
+  let messages = [];
+  for(let i = 0; i < chatEntries.length; i++) {
+    let entryData = chatEntries[i].children;
+    messages.push({
+      "msg": entryData[0].innerHTML,
+      "from": entryData[1].innerHTML,
+      "time": entryData[2].innerHTML
+    });
+
+    if(latestChatMessage != undefined) {
+      let msgTime = messages[messages.length-1]["time"];
+      if(msgTime == latestChatMessage["time"]) { messages = []; }
+    }
+  }
+  callback(messages);
 }
 
 function sendChatMessage(e) {
   e.preventDefault();
   if(chatBox == undefined) return;
-
   let chatMsg = chatBox.value;
   chatBox.value = "";
-  var xmlHttp2 = new XMLHttpRequest();
-  if(xmlHttp2.readyState == 0 || xmlHttp2.readyState == 4) {
-    xmlHttp2.onreadystatechange = function() {
-      if(xmlHttp2.readyState == 4 && xmlHttp2.status == 200) {
-        let xmlResponse = xmlHttp2.responseXML;
-        if(xmlResponse) {
-          console.log(xmlResponse.documentElement);
-        }
-      }
-    }
-    xmlHttp2.open("POST", "php/chat.php", true);
-    xmlHttp2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlHttp2.send("msg=" + chatMsg + "&from=" + myId + "&room=" + roomId);
-  }
+  let msg = "msg=" + chatMsg + "&from=" + myId + "&room=" + roomId;
+  loadAjaxDoc(null, "php/chat.php", "POST", msg);
 }
 
-/*
-mode parameter
-  0: fetch the complete move history
-  1: fetch only the latest entry
-*/
-function fetchMoveHistory(mode, callback) {
-  if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
-    xmlHttp.onreadystatechange = function() {
-      receivedMoveHistory(mode, callback);
-    }
-    xmlHttp.open("GET", "php/moveHistory.php?room="+roomId+"&mode="+mode, true);
-    xmlHttp.send(null);
-  }
+function fetchMoveHistory(callback) {
+  let mode = latestMove == undefined ? 0 : 1;
+  let doc = "php/moveHistory.php?room="+roomId+"&mode="+mode;
+  loadAjaxDoc(function(moveHistory) {
+    receivedMoveHistory(moveHistory, callback);
+  }, doc, "GET", null);
 }
 
-function receivedMoveHistory(mode, callback) {
-  if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-    let xmlResponse = xmlHttp.responseXML;
-    if(xmlResponse) {
-      let responseElement = xmlResponse.documentElement;
-      let resChildren = responseElement.children;
-      let moves = [];
-      for(let i = 0; i < resChildren.length; i++) {
-        moves.push(resChildren[i].innerHTML);
-      }
-      callback(moves);
-    }
-    else if(mode == 0) {
-      setTimeout(function() {
-        fetchMoveHistory(mode, callback);
-      }, 1000);
-    }
+function receivedMoveHistory(moveHistory, callback) {
+  let moveEntries = moveHistory.children;
+  let moves = [];
+  for(let i = 0; i < moveEntries.length; i++) {
+    moves.push(moveEntries[i].innerHTML);
   }
+  callback(moves);
 }
 
 function sendMoveRequest(move) {
-  if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
-    xmlHttp.onreadystatechange = function() {
-      receivedMoveResponse(move);
-    }
-    xmlHttp.open("GET", "php/moveHistory.php?room="+roomId+"&move="+move+"&playerId="+myId, true);
-    xmlHttp.send(null);
-  }
+  let doc = "php/moveHistory.php?room="+roomId+"&move="+move+"&playerId="+myId;
+  loadAjaxDoc(function(response) {
+    receivedMoveResponse(response, move);
+  }, doc, "GET", null);
 }
 
-function receivedMoveResponse(move) {
-  if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-    let xmlResponse = xmlHttp.responseXML;
-    if(xmlResponse) {
-      if(xmlResponse.documentElement.innerHTML == "true") {
-        isMyTurn = false;
-        myLatestMove = move;
-      }
-    }
+function receivedMoveResponse(response, move) {
+  if(response.innerHTML == "true") {
+    isMyTurn = false;
+    myLatestMove = move;
   }
 }
