@@ -1,0 +1,33 @@
+#timePanel {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60vw;
+  max-width: 70vh;
+  height: 100px;
+}
+
+#timePanelCenter {
+  float: left;
+  width: 30vw;
+  height: 100%;
+  max-width: 35vh;
+}
+
+.playerTime-wrapper {
+  float: left;
+  width: 15vw;
+  max-width: 17.5vh;
+  height: 100%;
+}
+
+.playerTime-wrapper > img {
+  display: block;
+  padding-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.playerTime {
+  text-align: center;
+}

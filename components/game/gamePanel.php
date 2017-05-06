@@ -1,4 +1,5 @@
 <div id="gamePanel">
+	<?php include "timePanel.php"; ?>
 	<div id="boardPanel">
 	  <?php include "leftBorder.php"; ?>
 	  <div id="chessBoard"></div>

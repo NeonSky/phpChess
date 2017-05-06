@@ -15,4 +15,5 @@
   <link rel="stylesheet" href="css/gamePanel.css">
   <link rel="stylesheet" href="css/chatPanel.css">
   <link rel="stylesheet" href="css/actionPanel.css">
+  <link rel="stylesheet" href="css/timePanel.css">
 </head>

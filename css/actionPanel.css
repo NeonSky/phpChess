@@ -19,10 +19,10 @@ th {
 
 td {
 	height: 30px;
+  border-bottom: 1px black solid;
 }
 
-table, td {
+table, th, td {
 	border-collapse: collapse;
-	border-bottom: 1px black solid;
 	text-align: center;
 }

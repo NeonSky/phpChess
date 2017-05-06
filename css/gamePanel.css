@@ -7,8 +7,8 @@
 
 #boardPanel {
   position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  /*top: 50%;
+  transform: translateY(-50%);*/
   margin-left: auto;
   margin-right: auto;
   width: 60vw;
@@ -19,8 +19,8 @@
 
 #chessBoard {
   float: left;
-  width: 50vw;
-  height: 50vw;
+  width: 55vw;
+  height: 55vw;
   max-width: 65vh;
   max-height: 65vh;
 }
@@ -33,16 +33,16 @@
 
 #leftBoardBorder {
   float: left;
-  width: 10vw;
-  height: 50vw; /* Same as chessboard */
+  width: 5vw;
+  height: 55vw;
   max-width: 5vh;
   max-height: 65vh;
 }
 
 #bottomBoardBorder {
   float: left;
-  width: 50vw;
-  height: 10vw;
+  width: 55vw;
+  height: 5vw;
   max-width: 65vh;
   max-height: 5vh;
 }
