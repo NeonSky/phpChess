@@ -1,9 +1,9 @@
 <?php
   include "./fileManager.php";
 
-  $roomId = isset($_GET['room']) ? $_GET['room'] : null;
+  $roomId = isset($_POST['room']) ? $_POST['room'] : null;
   $msg = isset($_POST['msg']) ? $_POST['msg'] : null;
-  $from = isset($_GET['from']) ? $_GET['from'] : null;
+  $from = isset($_POST['from']) ? $_POST['from'] : null;
 
   header('Content-Type: text/xml');
   echo '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>';
@@ -13,7 +13,7 @@
     addChatMessage($roomId, $msg, $from);
   }
   else if(!is_null($roomId)) {
-    printChatLog();
+    //printChatLog();
   }
   echo '</response>';
 
@@ -33,7 +33,10 @@
     $filePath = getRoomFilePath($roomId);
     if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
-      array_push($fileData['chatLog'], {"from":$from, "msg":$msg});
+      $chatEntry = new stdClass();
+      $chatEntry->from = $from;
+      $chatEntry->msg = $msg;
+      array_push($fileData['chatLog'], $chatEntry);
       file_put_contents($filePath, json_encode($fileData));
     }
   }

@@ -1,6 +1,6 @@
 var xmlHttp = new XMLHttpRequest();
 
-void fetchChatLog(callback) {
+function fetchChatLog(callback) {
   if(xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
     xmlHttp.onreadystatechange = function() {
       receivedChatLog(callback);
@@ -11,7 +11,29 @@ void fetchChatLog(callback) {
 }
 
 function receivedChatLog(callback) {
-  
+
+}
+
+function sendChatMessage(e) {
+  e.preventDefault();
+  if(chatBox == undefined) return;
+
+  let chatMsg = chatBox.value;
+  chatBox.value = "";
+  var xmlHttp2 = new XMLHttpRequest();
+  if(xmlHttp2.readyState == 0 || xmlHttp2.readyState == 4) {
+    xmlHttp2.onreadystatechange = function() {
+      if(xmlHttp2.readyState == 4 && xmlHttp2.status == 200) {
+        let xmlResponse = xmlHttp2.responseXML;
+        if(xmlResponse) {
+          console.log(xmlResponse.documentElement);
+        }
+      }
+    }
+    xmlHttp2.open("POST", "php/chat.php", true);
+    xmlHttp2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp2.send("msg=" + chatMsg + "&from=" + myId + "&room=" + roomId);
+  }
 }
 
 /*

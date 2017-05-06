@@ -12,8 +12,7 @@ function updateInfoPanel() {
     if(myColor == 'l') {
       colorText = "white";
       infoIcon.src = "res/pieces/light-king.svg";
-    }
-    else if(myColor == 'd') {
+    } else if(myColor == 'd') {
       colorText = "black";
       infoIcon.src = "res/pieces/dark-king.svg";
     }

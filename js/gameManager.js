@@ -1,18 +1,12 @@
-const roomId = '<?php echo json_encode($roomId); ?>';
-const myId = '<?php echo $_COOKIE[$roomId]; ?>';
-const myColor = '<?php echo getMyColor($roomId, $_COOKIE[$roomId]); ?>';
-var isMyTurn = '<?php echo isMyTurn($roomId, $_COOKIE[$roomId]); ?>';
-
 const infoPanel = document.getElementById('infoPanel');
 const infoIcon = document.getElementById('infoIcon');
 const actionTable = document.getElementById('actionTable');
+const chatForm = document.getElementById('chatForm');
+chatForm.addEventListener("submit", sendChatMessage, false);
+const chatBox = document.getElementById('chatBox');
 
 var latestMove, myLatestMove;
 var selectedChessPiece;
-
-
-// Driver program
-startGame();
 
 function startGame() {
   updateInfoPanel();
@@ -37,7 +31,6 @@ function loadChatLog() {
 }
 
 function resetChessPieces() {
-  let defaultBoardState = <?php echo json_encode(getDefaultBoardState()); ?>;
   for(let r = 0; r < chessBoardHeight; r++) {
     for(let c = 0; c < chessBoardWidth; c++) {
       let name = defaultBoardState[r][c];

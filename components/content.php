@@ -1,10 +1,10 @@
 <?php
   switch($page) {
     case "game":
-      include "./game/content.php";
+      include "game/content.php";
       break;
     default:
-      include "./index/content.php";
+      include "index/content.php";
       break;
   }
 ?>

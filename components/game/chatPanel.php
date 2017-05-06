@@ -10,6 +10,7 @@
 		<div class="msg-wrapper">
 		<div class="msg msgFromOther">Ready to get rekt?</div></div>
 	</div>
-	<textarea rows="4" cols="50">
-	</textarea>
+	<form id="chatForm">
+		<input id="chatBox" type="text" name="msg">
+	</form>
 </div>

@@ -1,7 +1,7 @@
 <div id="gamePanel">
 	<div id="boardPanel">
-	  <?php include "./leftBorder.php"; ?>
+	  <?php include "leftBorder.php"; ?>
 	  <div id="chessBoard"></div>
-	  <?php include "./bottomBorder.php"; ?>
+	  <?php include "bottomBorder.php"; ?>
   </div>
 </div>
