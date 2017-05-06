@@ -14,5 +14,5 @@
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="css/chessBoard.css">
   <link rel="stylesheet" href="css/chatPanel.css">
-  <link rel="stylesheet" href="css/actionHistory.css">
+  <link rel="stylesheet" href="css/actionPanel.css">
 </head>

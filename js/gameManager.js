@@ -1,11 +1,3 @@
-const infoPanel = document.getElementById('infoPanel');
-const infoIcon = document.getElementById('infoIcon');
-const actionTable = document.getElementById('actionTable');
-const chatForm = document.getElementById('chatForm');
-chatForm.addEventListener("submit", sendChatMessage, false);
-const chatBox = document.getElementById('chatBox');
-const messageFeed = document.getElementById('messageFeed');
-
 var latestChatMessage;
 var latestMove, myLatestMove;
 var selectedChessPiece;
@@ -20,7 +12,7 @@ function startGame() {
 
 function update() {
   fetchMoveHistory(loadMoveHistory);
-  fetchChatLog(loadChatLog);
+  fetchChatLog(updateChatPanel);
 }
 
 function loadMoveHistory(moveHistory) {
@@ -30,16 +22,6 @@ function loadMoveHistory(moveHistory) {
     moveChessPiece(move.r1, move.c1, move.r2, move.c2);
   }
   updateActionPanel(moveHistory);
-}
-
-function loadChatLog(chatEntries) {
-  for(let i = 0; i < chatEntries.length; i++) {
-    let wrapper = appendElement(messageFeed, "div", "msg-wrapper");
-    let from = myId == chatEntries[i]['from'] ? "msgFromMe" : "msgFromOther";
-    let msg = appendElement(wrapper, "div", "msg " + from);
-    msg.innerHTML = chatEntries[i]['msg'];
-    latestChatMessage = chatEntries[i];
-  }
 }
 
 function resetChessPieces() {

@@ -1,3 +1,13 @@
+const infoPanel = document.getElementById('infoPanel');
+const infoIcon = document.getElementById('infoIcon');
+const actionTable = document.getElementById('actionTable');
+const chatForm = document.getElementById('chatForm');
+const chatBox = document.getElementById('chatBox');
+const messageFeed = document.getElementById('messageFeed');
+
+chatForm.addEventListener("submit", sendChatMessage, false);
+
+
 function appendElement(parent, type, classname) {
   var child = document.createElement(type);
   child.className = classname;
@@ -39,5 +49,20 @@ function updateActionPanel(moveHistory) {
       entry.innerHTML = moveHistory[entriesAdded].toUpperCase();
       entriesAdded++;
     }
+  }
+}
+
+function updateChatPanel(chatEntries) {
+  for(let i = 0; i < chatEntries.length; i++) {
+    let wrapper = appendElement(messageFeed, "div", "msg-wrapper");
+    let from = myId == chatEntries[i]['from'] ? "msgFromMe" : "msgFromOther";
+    let msg = appendElement(wrapper, "div", "msg " + from);
+    msg.innerHTML = chatEntries[i]['msg'];
+    latestChatMessage = chatEntries[i];
+  }
+
+  if(chatEntries.length > 0) {
+    // Scroll down chat view to bottom, to read the new message(s)
+    messageFeed.scrollTop = messageFeed.scrollHeight;
   }
 }

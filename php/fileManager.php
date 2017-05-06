@@ -7,7 +7,7 @@
          dirname(__DIR__)."/res/defaultRoomFile.json", true);
 
   function getRoomFilePath($roomId) {
-    return dirname(__DIR__)."/rooms/room" . $roomId . ".json";
+    return dirname(__DIR__)."/server/rooms/room" . $roomId . ".json";
   }
 
   function resetFile($filePath) {

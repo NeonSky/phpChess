@@ -1,8 +1,0 @@
-{
-  "gameStarted":0,
-  "player1Id":0,
-  "player2Id":0,
-  "playerTurn":"l",
-  "moveHistory":[],
-  "chatLog":[]
-}

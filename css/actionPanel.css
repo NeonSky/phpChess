@@ -2,7 +2,9 @@
   float: left;
   width: 20%;
   height: 100%;
+  overflow-y: auto;
   border-right: 1px solid black;
+  background-color: #eaca94;
 }
 
 table {
@@ -12,14 +14,14 @@ table {
 
 th {
 	height: 40px;
-	background-color: #eaca94;
+	background-color: #b78b5a;
 }
 
 td {
 	height: 30px;
 }
 
-table, th, td {
+table, td {
 	border-collapse: collapse;
 	border-bottom: 1px black solid;
 	text-align: center;
