@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/chessBoard.css">
+  <link rel="stylesheet" href="css/gamePanel.css">
   <link rel="stylesheet" href="css/chatPanel.css">
   <link rel="stylesheet" href="css/actionPanel.css">
 </head>
