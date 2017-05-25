@@ -63,6 +63,8 @@
   align-items: center;
   float: left;
   text-align: center;
+  font-weight: 600;
+  color: white;
   background-color: #6b5134;
 }
 

@@ -12,8 +12,20 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/gamePanel.css">
-  <link rel="stylesheet" href="css/chatPanel.css">
-  <link rel="stylesheet" href="css/actionPanel.css">
-  <link rel="stylesheet" href="css/timePanel.css">
+
+  <?php
+    switch($page) {
+      case "game": ?>
+      <link rel="stylesheet" href="css/gamePanel.css">
+      <link rel="stylesheet" href="css/chatPanel.css">
+      <link rel="stylesheet" href="css/actionPanel.css">
+      <link rel="stylesheet" href="css/timePanel.css">
+    <?php
+    break;
+      default: ?>
+      <link rel="stylesheet" href="css/frontPage.css">
+  <?php
+      break;
+    }
+  ?>
 </head>

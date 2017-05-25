@@ -18,8 +18,9 @@ const chessBoardWidth = 8;
 const chessBoardHeight = 8;
 const chessBoard = document.getElementById('chessBoard');
 var chessTiles;
-
 var coloredTiles = [];
+
+var myKingPos = {};
 
 function buildChessBoard() {
   // Reset chessTiles
@@ -46,6 +47,12 @@ function createChessPiece(dbName, r, c) {
     var chessPiece = appendElement(chessTiles[r][c], 'img', 'chessPiece');
     chessPiece.name = dbName;
     chessPiece.src = './res/pieces/' + imgName + '.svg';
+    chessPieces.push({
+      "team": dbName[0],
+      "type": dbName[1],
+      "pos": {"r": r, "c": c}
+    });
+    storeKingMovements(chessPiece, r, c);
   }
   return chessPiece;
 }
@@ -53,8 +60,12 @@ function createChessPiece(dbName, r, c) {
 function onChessTileClick(e) {
   if(selectedChessPiece != undefined) {
     let tile = selectedChessPiece.element.parentElement;
+    let chessPiece = chessTiles[tile.row][tile.col].firstChild;
+    let pieceColor = chessPiece.name.charAt(0);
+    if(pieceColor != myColor) { return; }
     if(isMoveLegal(tile.row, tile.col, e.target.row, e.target.col)) {
-      sendMoveRequest(getMoveNotation(tile.row, tile.col, e.target.row, e.target.col));
+      sendMoveRequest(getMoveNotation(tile.row, tile.col,
+                                      e.target.row, e.target.col));
     }
     selectedChessPiece = undefined;
   }
@@ -101,17 +112,108 @@ function moveChessPiece(r1, c1, r2, c2) {
   if(chessPiece) {
     if(chessTiles[r2][c2].firstChild) { killChessPiece(r2, c2); }
     chessTiles[r2][c2].append(chessPiece);
-
-    if(isCheckMate()) {}
     selectedChessPiece = null;
+    for(let i = 0; i < chessPieces.length; i++) {
+      if(chessPieces[i].pos.r == r1 && chessPieces[i].pos.c == c1) {
+        chessPieces[i].pos = {"r":r2, "c":c2};
+        break;
+      }
+    }
+    storeKingMovements(chessPiece, r2, c2);
+    if(chessPiece.name[0] != myColor) { sendCheckStatus({"r":r2, "c":c2}); }
   }
   if(latestMove == myLatestMove) { isMyTurn = false; }
   else { myTurn = true; }
 }
 
+function storeKingMovements(chessPiece, r, c) {
+  if((chessPiece.name == "lk" && myColor == "l") ||
+     (chessPiece.name == "dk" && myColor == "d")) {
+    myKingPos = {"r":r, "c":c};
+  }
+}
+
+function sendCheckStatus(movedPiecePos) {
+  checkingPiecePos = movedPiecePos;
+  if(isCheck()) {
+    console.log("Is checked");
+    if(isCheckMate()) { sendCheckMate(); }
+    else { sendCheck(); }
+  }
+}
+
+function isCheck() {
+  return isMoveLegal(checkingPiecePos.r, checkingPiecePos.c,
+                     myKingPos.r, myKingPos.c);
+}
+
+// Note: assumes the king is already in check
+function isCheckMate() {
+  if(isCheckEscapable()) { return false; }
+  console.log("Not escapable!");
+  if(isCheckBlockable()) { return false; }
+  console.log("Not blockable!");
+  if(isCheckCapturable()) { return false; }
+  console.log("Not capturable!");
+  return true;
+}
+
+// For every possible escape position, check if it's safe
+function isCheckEscapable() {
+  for(let r = myKingPos.r-1; r < myKingPos.r+1; r++) {
+    for(let c = myKingPos.c-1; c < myKingPos.c+1; c++) {
+      if(r == c) { continue; }
+      if(isMoveLegal(myKingPos.r, myKingPos.c, r, c)) {
+        let isPositionSafe = true;
+        for(let i = 0; i < chessPieces.length; i++) {
+          if(isMoveLegal(chessPieces[i].pos.r, chessPieces[i].pos.c, r, c)) {
+            isPositionSafe = false;
+            break;
+          }
+        }
+        if(isPositionSafe) { return true; }
+      }
+    }
+  }
+  return false;
+}
+
+// For every ally piece, check every possible move and check if it can block
+function isCheckBlockable() {
+  for(let i = 0; i < chessPieces.length; i++) {
+    if(chessPieces[i].team != myColor) { continue; }
+    for(let r = 0; r < chessBoardHeight; r++) {
+      for(let c = 0; c < chessBoardWidth; c++) {
+        if(isMoveLegal(chessPieces[i].pos.r, chessPieces[i].pos.c, r, c)) {
+          if(!isCheck()) { return true; }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+// For every ally piece, check if it can capture the checking piece
+function isCheckCapturable() {
+  for(let i = 0; i < chessPieces.length; i++) {
+    if(chessPieces[i].team != myColor) { continue; }
+    if(isMoveLegal(chessPieces[i].pos.r, chessPieces[i].pos.c,
+                      checkingPiecePos.r, checkingPiecePos.c)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // r: row, c: column
 function killChessPiece(r, c) {
   chessTiles[r][c].removeChild(chessTiles[r][c].firstChild);
+  for(let i = 0; i < chessPieces.length; i++) {
+    if(chessPieces[i].pos.r == r && chessPieces[i].pos.c == c) {
+      chessPieces.splice(i, 1);
+      break;
+    }
+  }
 }
 
 function getMoveNotation(r1, c1, r2, c2) {
@@ -162,11 +264,9 @@ function isMoveLegal(r1, c1, r2, c2) {
   //console.log(c1 + ":" + r1 + ", " + c2 + ":" + r2);
   if(r1 == r2 && c1 == c2) return false;
   if(isOutOfBounds(r1, c1, r2, c2)) return false;
-  if(isAlly(r2, c2)) { return false; }
+  if(isAlly(r1, c1) && isAlly(r2, c2)) { return false; }
 
   let chessPiece = chessTiles[r1][c1].firstChild;
-  let pieceColor = chessPiece.name.charAt(0);
-  if(pieceColor != myColor) return false;
   let pieceType = chessPiece.name.charAt(1);
 
   switch(pieceType) {
@@ -298,9 +398,5 @@ function isPawnMoveLegal(r1, c1, r2, c2) {
     if(r2 == r1-2*dir && r1 == startRow && c2 == c1) { return true; }
   }
   //console.log(getMoveNotation(r1, c1, r2, c2));
-  return false;
-}
-
-function isCheckMate() {
   return false;
 }

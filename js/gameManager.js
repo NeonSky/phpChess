@@ -1,7 +1,9 @@
 var latestChatMessage;
 var latestMove, myLatestMove;
 var selectedChessPiece;
+var checkingPiecePos = {"r":0, "c":0};
 
+var chessPieces = [];
 
 function startGame() {
   updateInfoPanel();

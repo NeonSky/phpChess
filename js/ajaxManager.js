@@ -84,3 +84,8 @@ function receivedMoveResponse(response, move) {
     myLatestMove = move;
   }
 }
+
+function sendCheckMate() {
+  let doc = "php/moveHistory.php?room="+roomId+"&checkmate=1&playerId="+myId;
+  loadAjaxDoc(function(response) {}, doc, "GET", null);
+}
