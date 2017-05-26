@@ -51,6 +51,24 @@
     }
   }
 
+  function addChatMessage($roomId, $msg, $from) {
+    $filePath = getRoomFilePath($roomId);
+    if($json = getFileContent($filePath)) {
+      $fileData = json_decode($json, true);
+      $chatEntry = createChatEntry($from, $msg);
+      array_push($fileData['chatLog'], $chatEntry);
+      file_put_contents($filePath, json_encode($fileData));
+    }
+  }
+
+  function createChatEntry($from, $msg) {
+    $chatEntry = new stdClass();
+    $chatEntry->from = $from;
+    $chatEntry->msg = $msg;
+    $chatEntry->time = time();
+    return $chatEntry;
+  }
+
   function getDefaultBoardState() {
     if($file = fopen(defaultBoardStateFilePath, 'r')) {
       $defaultBoardState = array();
@@ -118,6 +136,15 @@
       if($playerId == $fileData['player2Id']) { return 'd'; }
     }
     return '';
+  }
+
+  function isGameOver($roomId) {
+    $filePath = getRoomFilePath($roomId);
+    if($json = getFileContent($filePath)) {
+      $fileData = json_decode($json, true);
+      return $fileData['gameEnded'] > 0;
+    }
+    return true;
   }
 
 ?>

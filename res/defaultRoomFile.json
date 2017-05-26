@@ -1,5 +1,6 @@
 {
   "gameStarted":0,
+  "gameEnded":1,
   "player1Id":0,
   "player2Id":0,
   "playerTurn":"l",

@@ -41,22 +41,4 @@
     echo '</entry>';
   }
 
-  function addChatMessage($roomId, $msg, $from) {
-    $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
-      $fileData = json_decode($json, true);
-      $chatEntry = createChatEntry($from, $msg);
-      array_push($fileData['chatLog'], $chatEntry);
-      file_put_contents($filePath, json_encode($fileData));
-    }
-  }
-
-  function createChatEntry($from, $msg) {
-    $chatEntry = new stdClass();
-    $chatEntry->from = $from;
-    $chatEntry->msg = $msg;
-    $chatEntry->time = time();
-    return $chatEntry;
-  }
-
 ?>

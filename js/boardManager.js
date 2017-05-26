@@ -136,7 +136,6 @@ function storeKingMovements(chessPiece, r, c) {
 function sendCheckStatus(movedPiecePos) {
   checkingPiecePos = movedPiecePos;
   if(isCheck()) {
-    console.log("Is checked");
     if(isCheckMate()) { sendCheckMate(); }
     else { sendCheck(); }
   }
