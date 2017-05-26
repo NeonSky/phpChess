@@ -2,9 +2,11 @@
   "gameStarted":0,
   "gameEnded":1,
   "turnStarted":0,
+  "player1Time":0,
+  "player2Time":0,
   "player1Id":0,
   "player2Id":0,
   "playerTurn":"l",
   "moveHistory":[],
-  "chatLog":[{"from":-1,"msg":"Type 'ready' when you are ready.","time":0}]
+  "chatLog":[]
 }

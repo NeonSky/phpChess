@@ -71,6 +71,17 @@ function receivedMoveHistory(moveHistory, callback) {
   callback(moves);
 }
 
+function fetchTimeStatus(callback) {
+  let doc = "php/moveHistory.php?room"+roomId;
+  loadAjaxDoc(function(timeStatus) {
+    receivedTimeStatus(timeStatus, callback);
+  }, doc, "GET", null);
+}
+
+function receivedTimeStatus(timeStatus, callback) {
+  console.log(timeStatus);
+}
+
 function sendMoveRequest(move) {
   let doc = "php/moveHistory.php?room="+roomId+"&move="+move+"&playerId="+myId;
   loadAjaxDoc(function(response) {

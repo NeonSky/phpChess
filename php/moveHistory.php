@@ -5,7 +5,6 @@
   $mode = isset($_GET['mode']) ? $_GET['mode'] : null;
   $move = isset($_GET['move']) ? $_GET['move'] : null;
   $playerId = isset($_GET['playerId']) ? $_GET['playerId'] : null;
-  $readyState = isset($_GET['readyState']) ? $_GET['readyState'] : null;
   $checkmate = isset($_GET['checkmate']) ? $_GET['checkmate'] : null;
 
   header('Content-Type: text/xml');
@@ -22,9 +21,8 @@
     else if(!is_null($roomId) && !is_null($playerId) && !is_null($checkmate)) {
       playerLost($roomId, $playerId);
     }
-  } else {
-    if(!is_null($roomId) && !is_null($playerId) && !is_null($readyState)) {
-      setReadyState($roomId, $playerId, $readyState);
+    else if(!is_null($roomId)) {
+      printTimeStatus($roomId);
     }
   }
   echo '</response>';
@@ -63,33 +61,30 @@
     }
   }
 
-  function setReadyState($roomId, $playerId, $readyState) {
-    /*$filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+  function printTimeStatus($roomId) {
+    if($json = getRoomContent($filePath)) {
       $fileData = json_decode($json, true);
 
-      if($readyState != 0) {
-        if($fileData['player1Id'] == 0) {
-          $fileData['player1Id'] = $playerId;
-        } else if($fileData['player2Id'] == 0 && $fileData['player1Id'] != $playerId) {
-          $fileData['player2Id'] = $playerId;
-        }
-      } else {
-        if($fileData['player1Id'] == $playerId) { $fileData['player1Id'] = 0; }
-        if($fileData['player2Id'] == $playerId) { $fileData['player2Id'] = 0; }
+      $addWhiteTime = $addBlackTime = 0;
+      if($fileData['playerTurn'] == 'l') {
+        $addWhiteTime = time()-$fileData['turnStarted'];
+      } else if($fileData['playerTurn'] == 'd') {
+        $addBlackTime = time()-$fileData['turnStarted'];
       }
 
-      // Start game
-      if($fileData['player1Id'] != 0 && $fileData['player2Id'] != 0) {
-        $fileData['gameStarted'] = time();
-        $fileData['gameEnded'] = 0;
+      echo '<whiteTime>';
+      echo $fileData['player1Time'] + $addWhiteTime;
+      echo '</whiteTime>';
+      echo '<blackTime>';
+      echo $fileData['player2Time'] + $addBlackTime;
+      echo '</blackTime>';
+
+      if($fileData['player1Time'] + $addWhiteTime >= 60*40) {
+        playerLost($roomId, getPlayerId($roomId, 1));
+      } else if($fileData['player2Time'] + $addBlackTime >= 60*40) {
+        playerLost($roomId, getPlayerId($roomId, 2));
       }
-      file_put_contents($filePath, json_encode($fileData));
-    }*/
-  }
-
-  function startGame() {
-
+    }
   }
 
 ?>

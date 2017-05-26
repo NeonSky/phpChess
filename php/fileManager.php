@@ -52,6 +52,13 @@
     $filePath = getRoomFilePath($roomId);
     if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
+      if($fileData['playerTurn'] == 'l') {
+        $fileData['player1Time'] += time()-$fileData['turnStarted'];
+      } else if($fileData['playerTurn'] == 'd') {
+        $fileData['player2Time'] += time()-$fileData['turnStarted'];
+      }
+      $fileData['turnStarted'] = time();
+
       $fileData['playerTurn'] = ($fileData['playerTurn'] == 'l') ? 'd' : 'l';
       array_push($fileData['moveHistory'], $move);
       file_put_contents($filePath, json_encode($fileData));

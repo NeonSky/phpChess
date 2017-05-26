@@ -4,6 +4,8 @@ const actionTable = document.getElementById('actionTable');
 const chatForm = document.getElementById('chatForm');
 const chatBox = document.getElementById('chatBox');
 const messageFeed = document.getElementById('messageFeed');
+const whiteTime = document.getElementById('whiteTime');
+const blackTime = document.getElementById('blackTime');
 
 chatForm.addEventListener("submit", sendChatMessage, false);
 
@@ -16,7 +18,7 @@ function appendElement(parent, type, classname) {
 }
 
 function updateInfoPanel() {
-  console.log("my id: " + myId + ", my color: " + myColor);
+  //console.log("my id: " + myId + ", my color: " + myColor);
   let colorText = 'observer';
   if(myColor) {
     if(myColor == 'l') {
@@ -30,6 +32,11 @@ function updateInfoPanel() {
   } else {
     infoPanel.innerHTML = "You are an observer";
   }
+}
+
+function updateTimePanel(timeStatus) {
+  whiteTime.innerHTML = timeStatus.white;
+  blackTime.innerHTML = timeStatus.black;
 }
 
 function updateActionPanel(moveHistory) {

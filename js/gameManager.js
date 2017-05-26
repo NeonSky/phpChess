@@ -15,6 +15,7 @@ function startGame() {
 function update() {
   fetchMoveHistory(loadMoveHistory);
   fetchChatLog(updateChatPanel);
+  fetchTimeStatus(updateTimePanel);
 }
 
 function loadMoveHistory(moveHistory) {
