@@ -5,7 +5,7 @@
   $mode = isset($_GET['mode']) ? $_GET['mode'] : null;
   $move = isset($_GET['move']) ? $_GET['move'] : null;
   $playerId = isset($_GET['playerId']) ? $_GET['playerId'] : null;
-  $readyState = isset(€_GET['readyState']) ? $_GET['readyState'] : null;
+  $readyState = isset($_GET['readyState']) ? $_GET['readyState'] : null;
   $checkmate = isset($_GET['checkmate']) ? $_GET['checkmate'] : null;
 
   header('Content-Type: text/xml');
