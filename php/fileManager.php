@@ -20,11 +20,18 @@
     return file_get_contents($filePath);
   }
 
+  function getRoomContent($roomId) {
+    $json = getFileContent(getRoomFilePath($roomId));
+    if(!$json) { $json = resetRoomFile($roomId); }
+    return $json;
+  }
+
   function resetRoomFile($roomId) {
     $filePath = getRoomFilePath($roomId);
     if($json = getFileContent(defaultRoomFile)) {
       file_put_contents($filePath, $json);
     }
+    return $json;
   }
 
   function openRoomFile($roomId, $mode) {
@@ -43,7 +50,7 @@
 
   function addMoveEntry($roomId, $move) {
     $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
       $fileData['playerTurn'] = ($fileData['playerTurn'] == 'l') ? 'd' : 'l';
       array_push($fileData['moveHistory'], $move);
@@ -53,7 +60,7 @@
 
   function addChatMessage($roomId, $msg, $from) {
     $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
       $chatEntry = createChatEntry($from, $msg);
       array_push($fileData['chatLog'], $chatEntry);
@@ -82,8 +89,7 @@
 
   function getMoveHistory($roomId, $onlyLatest) {
     $moveHistory = array();
-    $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
       if($onlyLatest && count($fileData['moveHistory']) > 0) {
         array_push($moveHistory,
@@ -96,13 +102,11 @@
       }
       return $moveHistory;
     }
-    else { resetRoomFile($roomId); }
     return $moveHistory;
   }
 
   function getPlayerId($roomId, $playerNr) {
-    $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
       return $fileData['player'.$playerNr.'Id'];
     }
@@ -111,7 +115,7 @@
 
   function setPlayerId($roomId, $playerNr, $playerId) {
     $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
       $fileData['player'.$playerNr.'Id'] = $playerId;
       // Start game
@@ -125,8 +129,7 @@
 
   function isMyTurn($roomId, $playerId) {
     $playerColor = getMyColor($roomId, $playerId);
-    $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
       return ($fileData['playerTurn'] == $playerColor);
     }
@@ -134,8 +137,7 @@
   }
 
   function getMyColor($roomId, $playerId) {
-    $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
       if($playerId == $fileData['player1Id']) { return 'l'; }
       if($playerId == $fileData['player2Id']) { return 'd'; }
@@ -144,8 +146,7 @@
   }
 
   function isGameOver($roomId) {
-    $filePath = getRoomFilePath($roomId);
-    if($json = getFileContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
       return $fileData['gameEnded'] > 0;
     }
