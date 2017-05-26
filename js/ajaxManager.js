@@ -80,9 +80,13 @@ function fetchTimeStatus(callback) {
 
 function receivedTimeStatus(timeStatus, callback) {
   let times = timeStatus.children;
-  if(times) {
-    whiteTime.innerHTML = Math.floor(times[0].innerHTML/60)+":"+times[0].innerHTML%60;
-    blackTime.innerHTML = Math.floor(times[1].innerHTML/60)+":"+times[1].innerHTML%60;
+  if(times.length > 1) {
+    let wMinutes = 40-Math.floor(times[0].innerHTML/60)-(times[0].innerHTML%60>0?1:0);
+    let wSeconds = times[0].innerHTML%60 == 0 ? "00" : (60-times[0].innerHTML%60);
+    whiteTime.innerHTML = wMinutes+":"+wSeconds;
+    let bMinutes = 40-Math.floor(times[1].innerHTML/60)-(times[1].innerHTML%60>0?1:0);
+    let bSeconds = times[1].innerHTML%60 == 0 ? "00" : (60-times[1].innerHTML%60);
+    blackTime.innerHTML = bMinutes+":"+bSeconds;
   }
 }
 
