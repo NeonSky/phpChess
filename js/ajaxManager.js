@@ -79,7 +79,8 @@ function fetchTimeStatus(callback) {
 }
 
 function receivedTimeStatus(timeStatus, callback) {
-  console.log(timeStatus);
+  whiteTime.innerHTML = timeStatus[0].innerHTML%60+":"+timeStatus[0].innerHTML/60;
+  blackTime.innerHTML = timeStatus[1].innerHTML%60+":"+timeStatus[1].innerHTML/60;
 }
 
 function sendMoveRequest(move) {
