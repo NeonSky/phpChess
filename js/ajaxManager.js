@@ -80,8 +80,10 @@ function fetchTimeStatus(callback) {
 
 function receivedTimeStatus(timeStatus, callback) {
   let times = timeStatus.children;
-  whiteTime.innerHTML = times[0].innerHTML%60+":"+times[0].innerHTML/60;
-  blackTime.innerHTML = times[1].innerHTML%60+":"+times[1].innerHTML/60;
+  if(times) {
+    whiteTime.innerHTML = Math.floor(times[0].innerHTML/60)+":"+times[0].innerHTML%60;
+    blackTime.innerHTML = Math.floor(times[1].innerHTML/60)+":"+times[1].innerHTML%60;
+  }
 }
 
 function sendMoveRequest(move) {
