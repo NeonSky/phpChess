@@ -62,8 +62,9 @@
   }
 
   function printTimeStatus($roomId) {
-    if($json = getRoomContent($filePath)) {
+    if($json = getRoomContent($roomId)) {
       $fileData = json_decode($json, true);
+      if($fileData['turnStarted'] == 0) { return; }
 
       $addWhiteTime = $addBlackTime = 0;
       if($fileData['playerTurn'] == 'l') {
@@ -71,10 +72,6 @@
       } else if($fileData['playerTurn'] == 'd') {
         $addBlackTime = time()-$fileData['turnStarted'];
       }
-
-      echo '<a1>'.$addWhiteTime.'</a1>';
-      echo '<a2>'.$addBlackTime.'</a2>';
-      echo '<a3>'.$fileData['turnStarted'].'</a3>';
 
       echo '<whiteTime>';
       echo $fileData['player1Time'] + $addWhiteTime;
