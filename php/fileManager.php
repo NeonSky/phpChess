@@ -13,6 +13,7 @@
   function resetFile($filePath) {
     $file = fopen($filePath, 'w');
     fclose($file);
+    chmod($filePath, 0777);
   }
 
   function getFileContent($filePath) {
