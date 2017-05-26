@@ -64,7 +64,7 @@
   }
 
   function setReadyState($roomId, $playerId, $readyState) {
-    $filePath = getRoomFilePath($roomId);
+    /*$filePath = getRoomFilePath($roomId);
     if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
 
@@ -85,7 +85,7 @@
         $fileData['gameEnded'] = 0;
       }
       file_put_contents($filePath, json_encode($fileData));
-    }
+    }*/
   }
 
   function startGame() {

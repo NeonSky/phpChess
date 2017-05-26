@@ -114,6 +114,11 @@
     if($json = getFileContent($filePath)) {
       $fileData = json_decode($json, true);
       $fileData['player'.$playerNr.'Id'] = $playerId;
+      // Start game
+      if($fileData['player1Id'] != 0 && $fileData['player2Id'] != 0) {
+        $fileData['gameStarted'] = $fileData['turnStarted'] = time();
+        $fileData['gameEnded'] = 0;
+      }
       file_put_contents($filePath, json_encode($fileData));
     }
   }
